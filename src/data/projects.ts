@@ -7,6 +7,8 @@ export interface Project {
   summary: string;
   gradient: string;
   seed: number;
+  /** minimal illustration variant; falls back to the rendered form when unset */
+  art?: 'brand';
   services: string[];
   challenge: string;
   approach: string;
@@ -26,6 +28,7 @@ export const projects: Project[] = [
       'We built a cohesive visual identity and digital presence — from brand system to commerce experience — positioning the brand for a discerning, design-led audience.',
     gradient: 'from-purple to-royal',
     seed: 0,
+    art: 'brand',
     services: ['Brand Identity', 'Creative Direction', 'E-Commerce', 'Content System'],
     challenge:
       'The house had a strong product but no coherent identity. Every touchpoint — packaging, social, retail — spoke a different visual language, and the digital storefront read as a generic template rather than a premium destination.',

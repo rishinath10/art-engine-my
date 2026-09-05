@@ -5,6 +5,7 @@ import { ArrowUpRight } from 'lucide-react';
 import { PageShell } from '../components/PageShell';
 import { Reveal } from '../components/Reveal';
 import { AbstractForm } from '../components/AbstractForm';
+import { ProjectArt } from '../components/ProjectArt';
 import { projects } from '../data/projects';
 import { TransitionLink } from '../components/TransitionLink';
 
@@ -48,7 +49,11 @@ export function Work() {
                       animate={{ scale: isHovered ? 1.06 : 1 }}
                       transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
                     >
-                      <AbstractForm className="h-full w-full" seed={project.seed} />
+                      {project.art ? (
+                        <ProjectArt className="h-full w-full" variant={project.art} />
+                      ) : (
+                        <AbstractForm className="h-full w-full" seed={project.seed} />
+                      )}
                     </motion.div>
                     <motion.div
                       className="absolute inset-0 bg-gradient-to-t from-navy/25 via-transparent to-transparent"
