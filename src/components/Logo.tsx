@@ -1,3 +1,6 @@
+import logoLockup from '../assets/brand/ae-logo.png';
+import logoIcon from '../assets/brand/ae-icon.png';
+
 interface LogoProps {
   size?: number;
   className?: string;
@@ -6,7 +9,7 @@ interface LogoProps {
 export function LogoMark({ size, className = '' }: LogoProps) {
   return (
     <img
-      src="/brand/ae-icon.png"
+      src={logoIcon}
       alt=""
       aria-hidden="true"
       style={size ? { width: size } : undefined}
@@ -19,7 +22,7 @@ export function LogoMark({ size, className = '' }: LogoProps) {
 export function Logo({ size, className = '' }: LogoProps) {
   return (
     <img
-      src="/brand/ae-logo.png"
+      src={logoLockup}
       alt="Art Engine My"
       style={size ? { width: size } : undefined}
       className={`h-auto select-none ${className}`}
