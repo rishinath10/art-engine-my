@@ -13,6 +13,9 @@ interface Cloud {
   duration: number;
 }
 
+/** royal blue lifted toward white — reads as blue without going navy */
+const SOFT_BLUE = '#93A8E8';
+
 const clouds: Cloud[] = [
   {
     gradient: 'radial-gradient(circle at 40% 40%, #B8A2F2 0%, #EAE4FA 45%, transparent 72%)',
@@ -24,19 +27,19 @@ const clouds: Cloud[] = [
     duration: 52,
   },
   {
-    gradient: 'radial-gradient(circle at 50% 50%, #263F9F 0%, #B8A2F2 42%, transparent 70%)',
+    gradient: `radial-gradient(circle at 50% 50%, ${SOFT_BLUE} 0%, #A9B6EE 40%, transparent 70%)`,
     size: 'h-[65vh] w-[65vh]',
     position: '-bottom-[22vh] left-[22vw]',
-    opacity: 0.15,
+    opacity: 0.22,
     blur: 'blur-[120px]',
     path: { x: [0, -60, 45, 0], y: [0, 35, -35, 0], scale: [1, 0.9, 1.1, 1] },
     duration: 61,
   },
   {
-    gradient: 'radial-gradient(circle at 50% 50%, #263F9F 0%, #6E35C5 45%, transparent 72%)',
+    gradient: `radial-gradient(circle at 50% 50%, #6E35C5 0%, ${SOFT_BLUE} 48%, transparent 74%)`,
     size: 'h-[55vh] w-[55vh]',
     position: 'bottom-[-15vh] right-[8vw]',
-    opacity: 0.13,
+    opacity: 0.18,
     blur: 'blur-[110px]',
     path: { x: [0, -45, 25, 0], y: [0, 40, -25, 0], scale: [1, 1.08, 0.95, 1] },
     duration: 47,
@@ -105,6 +108,19 @@ export function AuroraBackground({
           }}
         />
       ))}
+      {/* the foot of the page: purple and soft blue blended across, fading up */}
+      <motion.div
+        className="absolute inset-x-0 bottom-0 h-[48vh]"
+        style={{
+          background: `linear-gradient(to top, rgba(147,168,232,0.34) 0%, rgba(147,168,232,0.14) 38%, transparent 78%),
+            linear-gradient(102deg, rgba(110,53,197,0.30) 0%, rgba(147,168,232,0.30) 52%, rgba(184,162,242,0.32) 100%)`,
+          maskImage: 'linear-gradient(to top, black 0%, black 30%, transparent 92%)',
+          WebkitMaskImage: 'linear-gradient(to top, black 0%, black 30%, transparent 92%)',
+        }}
+        animate={reduced || isSmall ? undefined : { x: [0, 26, -18, 0], opacity: [0.9, 1, 0.86, 0.9] }}
+        transition={{ duration: 44, repeat: Infinity, ease: 'easeInOut', times: [0, 0.34, 0.68, 1] }}
+      />
+
       {particles && <Particles />}
       {!isSmall && (
         <motion.div
