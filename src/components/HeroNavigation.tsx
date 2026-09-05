@@ -31,18 +31,7 @@ function HoverPreview({ hovered }: { hovered: NavNode | null }) {
             {hovered.previewText}
           </p>
         </motion.div>
-      ) : (
-        <motion.p
-          key="idle"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-          className="font-sans text-[10px] uppercase tracking-[0.34em] text-muted/60"
-        >
-          Explore the Art Engine world
-        </motion.p>
-      )}
+      ) : null}
     </AnimatePresence>
   );
 }

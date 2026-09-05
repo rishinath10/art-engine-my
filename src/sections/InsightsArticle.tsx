@@ -4,7 +4,7 @@ import { motion, useScroll, useSpring } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { PageTransition } from '../components/PageTransition';
 import { AuroraBackground } from '../components/AuroraBackground';
-import { AbstractForm } from '../components/AbstractForm';
+import { MinimalArt } from '../components/MinimalArt';
 import { insights } from '../data/insights';
 import { TransitionLink } from '../components/TransitionLink';
 
@@ -60,7 +60,7 @@ export function InsightsArticle() {
           </div>
 
           <div className="mx-auto mt-14 aspect-[16/9] max-w-4xl overflow-hidden rounded-[2.5rem] border border-white/70">
-            <AbstractForm className="h-full w-full" seed={index + 1} />
+            <MinimalArt className="h-full w-full" variant={post.art} />
           </div>
 
           <article className="mx-auto mt-16 max-w-2xl space-y-8">

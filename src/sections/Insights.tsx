@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { PageShell } from '../components/PageShell';
 import { Reveal } from '../components/Reveal';
-import { AbstractForm } from '../components/AbstractForm';
+import { MinimalArt } from '../components/MinimalArt';
 import { insights } from '../data/insights';
 import { TransitionLink } from '../components/TransitionLink';
 
@@ -62,7 +62,7 @@ export function Insights() {
               animate={{ scale: hovered === lead.slug ? 1.06 : 1 }}
               transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
             >
-              <AbstractForm className="h-full w-full" seed={2} />
+              <MinimalArt className="h-full w-full" variant={lead.art} />
             </motion.div>
           </motion.div>
         </TransitionLink>
@@ -88,7 +88,7 @@ export function Insights() {
                   animate={{ scale: hovered === post.slug ? 1.06 : 1 }}
                   transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <AbstractForm className="h-full w-full" seed={i === 0 ? 1 : 3} />
+                  <MinimalArt className="h-full w-full" variant={post.art} />
                 </motion.div>
               </motion.div>
 

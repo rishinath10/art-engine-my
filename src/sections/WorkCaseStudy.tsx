@@ -2,7 +2,7 @@ import { Navigate, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { PageTransition } from '../components/PageTransition';
 import { AuroraBackground } from '../components/AuroraBackground';
-import { ParallaxPanel } from '../components/ParallaxPanel';
+import { MinimalArt } from '../components/MinimalArt';
 import { Reveal } from '../components/Reveal';
 import { projects } from '../data/projects';
 import { TransitionLink } from '../components/TransitionLink';
@@ -64,7 +64,9 @@ export function WorkCaseStudy() {
               </div>
             </div>
 
-            <ParallaxPanel className="h-[340px] w-full lg:h-[520px]" seed={project.seed} />
+            <div className="h-[340px] w-full overflow-hidden rounded-[2.5rem] border border-white/70 lg:h-[520px]">
+              <MinimalArt className="h-full w-full" variant={project.art} />
+            </div>
           </div>
 
           <div className="mt-24 grid gap-3 border-t border-navy/10 pt-14 sm:grid-cols-3 sm:gap-10">

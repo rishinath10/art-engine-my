@@ -1,9 +1,12 @@
+import type { MinimalArtVariant } from '../components/MinimalArt';
+
 export interface Insight {
   slug: string;
   title: string;
   category: string;
   date: string;
   readTime: string;
+  art: MinimalArtVariant;
   excerpt: string;
   body: string[];
 }
@@ -11,6 +14,7 @@ export interface Insight {
 export const insights: Insight[] = [
   {
     slug: 'rise-of-agentic-ai-in-business',
+    art: 'agentic-ai' as const,
     title: 'The Rise of Agentic AI in Business',
     category: 'Artificial Intelligence',
     date: 'August 2026',
@@ -25,6 +29,7 @@ export const insights: Insight[] = [
   },
   {
     slug: 'why-digitalization-matters-more-than-ever',
+    art: 'digitalization' as const,
     title: 'Why Digitalization Matters More Than Ever',
     category: 'Digital Transformation',
     date: 'July 2026',
@@ -39,6 +44,7 @@ export const insights: Insight[] = [
   },
   {
     slug: 'creating-digital-experiences-that-last',
+    art: 'experience' as const,
     title: 'Creating Digital Experiences That Last',
     category: 'Design & Strategy',
     date: 'June 2026',

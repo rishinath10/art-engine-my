@@ -1,3 +1,5 @@
+import type { MinimalArtVariant } from '../components/MinimalArt';
+
 export interface Project {
   slug: string;
   name: string;
@@ -7,8 +9,8 @@ export interface Project {
   summary: string;
   gradient: string;
   seed: number;
-  /** minimal illustration variant; falls back to the rendered form when unset */
-  art?: 'brand';
+  /** which minimal illustration to draw for this project */
+  art: MinimalArtVariant;
   services: string[];
   challenge: string;
   approach: string;
@@ -28,7 +30,7 @@ export const projects: Project[] = [
       'We built a cohesive visual identity and digital presence — from brand system to commerce experience — positioning the brand for a discerning, design-led audience.',
     gradient: 'from-purple to-royal',
     seed: 0,
-    art: 'brand',
+    art: 'brand' as const,
     services: ['Brand Identity', 'Creative Direction', 'E-Commerce', 'Content System'],
     challenge:
       'The house had a strong product but no coherent identity. Every touchpoint — packaging, social, retail — spoke a different visual language, and the digital storefront read as a generic template rather than a premium destination.',
@@ -44,6 +46,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'e-invitation-platform',
+    art: 'invitation' as const,
     name: 'E-Invitation Platform',
     category: 'Web & App',
     year: '2025',
@@ -68,6 +71,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'business-automation',
+    art: 'automation' as const,
     name: 'Business Automation',
     category: 'AI Solutions',
     year: '2026',
@@ -92,6 +96,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'digital-campaign',
+    art: 'campaign' as const,
     name: 'Digital Campaign',
     category: 'Creative / Marketing',
     year: '2026',
