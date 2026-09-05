@@ -6,6 +6,7 @@ import App from './App';
 export { staticPaths, errorPath } from './routes';
 export { metaForPath } from './data/meta';
 export { SITE_URL, SITE_NAME, OG_IMAGE, LOGO_URL } from './data/site';
+export { schemasForPath } from './data/schema';
 
 /**
  * Renders a route to HTML at build time. Effects don't run here, so anything
