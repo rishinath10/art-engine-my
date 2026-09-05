@@ -1,4 +1,6 @@
 import { motion } from 'framer-motion';
+import { useMediaQuery } from '../hooks/useMediaQuery';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 
 interface Cloud {
   gradient: string;
@@ -21,7 +23,7 @@ const clouds: Cloud[] = [
     duration: 52,
   },
   {
-    gradient: 'radial-gradient(circle at 50% 50%, #6E35C5 0%, #B8A2F2 40%, transparent 70%)',
+    gradient: 'radial-gradient(circle at 50% 50%, #263F9F 0%, #B8A2F2 42%, transparent 70%)',
     size: 'h-[65vh] w-[65vh]',
     position: '-bottom-[22vh] left-[22vw]',
     opacity: 0.15,
@@ -48,7 +50,7 @@ const clouds: Cloud[] = [
     duration: 58,
   },
   {
-    gradient: 'radial-gradient(circle at 50% 50%, #B8A2F2 0%, transparent 68%)',
+    gradient: 'radial-gradient(circle at 50% 50%, #263F9F 0%, #B8A2F2 55%, transparent 72%)',
     size: 'h-[45vh] w-[45vh]',
     position: 'top-[12vh] -left-[15vh]',
     opacity: 0.12,
@@ -63,21 +65,31 @@ const clouds: Cloud[] = [
  * interface. Animates transform/opacity only so it stays cheap to composite.
  */
 export function AuroraBackground({ className = '' }: { className?: string }) {
+  const isSmall = useMediaQuery('(max-width: 767px)');
+  const reduced = useReducedMotion();
+
+  // Large blur radii are the expensive part; small screens get fewer, lighter
+  // layers and static positioning so mid-range phones stay at 60fps.
+  const active = isSmall ? clouds.slice(0, 3) : clouds;
+  const animateClouds = !isSmall && !reduced;
+
   return (
     <div
       className={`pointer-events-none absolute inset-0 overflow-hidden ${className}`}
       aria-hidden="true"
     >
-      {clouds.map((cloud, i) => (
+      {active.map((cloud, i) => (
         <motion.div
           key={i}
-          className={`absolute rounded-full ${cloud.size} ${cloud.position} ${cloud.blur}`}
+          className={`absolute rounded-full ${cloud.size} ${cloud.position} ${
+            isSmall ? 'blur-[60px]' : cloud.blur
+          }`}
           style={{ background: cloud.gradient, opacity: cloud.opacity }}
-          animate={{
-            x: cloud.path.x,
-            y: cloud.path.y,
-            scale: cloud.path.scale,
-          }}
+          animate={
+            animateClouds
+              ? { x: cloud.path.x, y: cloud.path.y, scale: cloud.path.scale }
+              : undefined
+          }
           transition={{
             duration: cloud.duration,
             repeat: Infinity,
@@ -86,15 +98,17 @@ export function AuroraBackground({ className = '' }: { className?: string }) {
           }}
         />
       ))}
-      <motion.div
-        className="absolute left-1/2 top-1/2 h-[120vh] w-[120vh] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-[0.03] blur-[80px]"
-        style={{
-          background:
-            'conic-gradient(from 0deg, #6E35C5, #263F9F, #B8A2F2, #EAE4FA, #6E35C5)',
-        }}
-        animate={{ rotate: 360 }}
-        transition={{ duration: 180, repeat: Infinity, ease: 'linear' }}
-      />
+      {!isSmall && (
+        <motion.div
+          className="absolute left-1/2 top-1/2 h-[120vh] w-[120vh] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-[0.03] blur-[80px]"
+          style={{
+            background:
+              'conic-gradient(from 0deg, #6E35C5, #263F9F, #B8A2F2, #EAE4FA, #6E35C5)',
+          }}
+          animate={reduced ? undefined : { rotate: 360 }}
+          transition={{ duration: 180, repeat: Infinity, ease: 'linear' }}
+        />
+      )}
     </div>
   );
 }

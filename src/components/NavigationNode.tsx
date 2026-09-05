@@ -30,8 +30,8 @@ export function NavigationNode({
   const ref = useRef<HTMLButtonElement>(null);
   const Icon = node.icon;
 
-  const size = compact ? 46 : 64;
-  const gap = size / 2 + (compact ? 12 : 18);
+  const size = compact ? 54 : 64;
+  const gap = size / 2 + (compact ? 13 : 18);
   const horizontal = labelMode === 'auto' && Math.abs(direction.x) > 0.5;
 
   const handleSelect = () => {
@@ -65,7 +65,9 @@ export function NavigationNode({
         onBlur={() => onHover(null)}
         onClick={handleSelect}
         className={`z-20 flex items-center justify-center rounded-full border transition-colors duration-500 ${
-          isActive ? 'border-purple bg-purple' : 'border-navy/10 bg-white/90 backdrop-blur-sm'
+          isActive
+            ? 'border-royal/60 bg-gradient-to-br from-purple to-royal'
+            : 'border-navy/10 bg-white/90 backdrop-blur-sm'
         }`}
         style={{
           width: size,
@@ -80,10 +82,11 @@ export function NavigationNode({
           x: isActive ? direction.x * 6 : 0,
           y: isActive ? direction.y * 6 : 0,
           boxShadow: isActive
-            ? '0 20px 45px -14px rgba(110, 53, 197, 0.5), 0 0 0 8px rgba(184, 162, 242, 0.16)'
+            ? '0 20px 45px -14px rgba(38, 63, 159, 0.45), 0 0 0 8px rgba(184, 162, 242, 0.16)'
             : '0 12px 32px -20px rgba(17, 25, 54, 0.45)',
         }}
-        whileTap={{ scale: 1.04 }}
+        whileTap={{ scale: 0.92 }}
+        onTouchStart={() => onHover(node)}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       >
         <motion.span
@@ -93,7 +96,7 @@ export function NavigationNode({
             isActive ? 'text-white' : 'text-royal'
           }`}
         >
-          <Icon size={compact ? 17 : 20} strokeWidth={1.5} />
+          <Icon size={compact ? 19 : 20} strokeWidth={1.5} />
         </motion.span>
       </motion.button>
 
@@ -113,7 +116,7 @@ export function NavigationNode({
         transition={{ duration: 0.4 }}
       >
         <div
-          className={`font-sans tracking-[0.3em] text-purple-light ${
+          className={`font-sans tracking-[0.3em] text-royal/45 ${
             compact ? 'text-[8px]' : 'text-[9px]'
           }`}
         >
@@ -121,7 +124,7 @@ export function NavigationNode({
         </div>
         <div
           className={`mt-1 font-sans font-medium uppercase leading-tight transition-colors duration-500 ${
-            compact ? 'text-[9.5px] tracking-[0.12em]' : 'text-[11px] tracking-[0.18em]'
+            compact ? 'text-[10.5px] tracking-[0.1em]' : 'text-[11px] tracking-[0.18em]'
           } ${isActive ? 'text-purple' : 'text-navy'}`}
         >
           {compact ? node.shortLabel : node.label}

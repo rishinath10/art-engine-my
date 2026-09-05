@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { NavigationNode } from './NavigationNode';
@@ -6,15 +6,17 @@ import { Logo } from './Logo';
 import { navNodes, type NavNode } from '../data/navigation';
 import { useTransition } from '../context/TransitionContext';
 import { useMediaQuery } from '../hooks/useMediaQuery';
+import { useReducedMotion } from '../hooks/useReducedMotion';
+import { usePointer } from '../hooks/usePointer';
 
 const RING_RADIUS = 38;
 
 /** Arc sweep for the mobile layout: left to right across the top of a circle
  *  whose centre sits below the screen, keeping every node in the thumb zone. */
-const ARC_START = 168;
-const ARC_END = 12;
+const ARC_START = 160;
+const ARC_END = 20;
 const ARC_RX = 41;
-const ARC_RY = 84;
+const ARC_RY = 80;
 
 function HoverPreview({ hovered }: { hovered: NavNode | null }) {
   return (
@@ -50,24 +52,39 @@ function HoverPreview({ hovered }: { hovered: NavNode | null }) {
   );
 }
 
-export function HeroNavigation() {
+export function HeroNavigation({
+  onHoverChange,
+}: {
+  onHoverChange?: (node: NavNode | null) => void;
+}) {
   const [hovered, setHovered] = useState<NavNode | null>(null);
   const navigate = useNavigate();
   const { runTransition } = useTransition();
   const isCompact = useMediaQuery('(max-width: 1023px)');
+  const reduced = useReducedMotion();
+  const pointer = usePointer();
+
+  useEffect(() => {
+    onHoverChange?.(hovered);
+  }, [hovered, onHoverChange]);
 
   const handleSelect = (node: NavNode, origin: { x: number; y: number }) => {
     runTransition(origin.x, origin.y, () => navigate(node.path));
   };
 
+  const parallax = (depth: number) =>
+    isCompact || reduced
+      ? { x: 0, y: 0 }
+      : { x: pointer.nx * depth, y: pointer.ny * depth };
+
   if (isCompact) {
     return (
       <div className="flex w-full flex-col items-center">
-        <div className="flex min-h-[96px] w-full max-w-sm items-start justify-center px-6 text-center">
+        <div className="flex min-h-[68px] w-full max-w-sm items-start justify-center px-6 text-center">
           <HoverPreview hovered={hovered} />
         </div>
 
-        <div className="relative -mx-6 mt-6 h-[206px] w-screen max-w-[520px] sm:h-[250px] sm:max-w-[660px]">
+        <div className="relative -mx-6 mt-4 h-[188px] w-screen max-w-[520px] sm:h-[240px] sm:max-w-[660px]">
           <svg
             viewBox="0 0 100 100"
             preserveAspectRatio="none"
@@ -124,12 +141,40 @@ export function HeroNavigation() {
   return (
     <div className="flex w-full flex-col items-center">
       <div className="relative aspect-square w-full max-w-[min(58vw,470px,52vh)]">
-        <svg
+        <motion.svg
           viewBox="0 0 100 100"
           className="absolute inset-0 h-full w-full"
           aria-hidden="true"
           fill="none"
+          animate={parallax(10)}
+          transition={{ type: 'spring', damping: 30, stiffness: 60, mass: 0.8 }}
         >
+          <defs>
+            <path
+              id="hero-ring-text"
+              d="M50 50 m-31 0 a31 31 0 1 1 62 0 a31 31 0 1 1 -62 0"
+              fill="none"
+            />
+          </defs>
+
+          <motion.g
+            animate={reduced ? undefined : { rotate: 360 }}
+            transition={{ duration: 240, repeat: Infinity, ease: 'linear' }}
+            style={{ transformOrigin: '50% 50%' }}
+          >
+            <text
+              className="font-sans"
+              fill="#111936"
+              fillOpacity="0.2"
+              fontSize="1.9"
+              letterSpacing="0.5"
+            >
+              <textPath href="#hero-ring-text" startOffset="0%">
+                {'CREATIVITY · TECHNOLOGY · DIGITALIZATION · '.repeat(2)}
+              </textPath>
+            </text>
+          </motion.g>
+
           <motion.circle
             cx="50"
             cy="50"
@@ -152,30 +197,39 @@ export function HeroNavigation() {
           <motion.circle
             cx="50"
             cy="50"
-            r={RING_RADIUS - 8}
+            r={RING_RADIUS - 3}
             stroke="#B8A2F2"
-            strokeOpacity={0.22}
+            strokeOpacity={0.2}
             strokeWidth="0.1"
             initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: hovered ? 1.03 : 1, opacity: 1 }}
+            animate={{ scale: hovered ? 1.02 : 1, opacity: 1 }}
             style={{ transformOrigin: '50% 50%' }}
             transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1], delay: 0.35 }}
           />
-        </svg>
+        </motion.svg>
 
         <motion.div
           className="absolute left-1/2 top-1/2 z-10 flex items-center justify-center rounded-full bg-white/95 backdrop-blur-sm"
           style={{
-            x: '-50%',
-            y: '-50%',
             width: '48%',
             height: '48%',
+            marginLeft: '-24%',
+            marginTop: '-24%',
             boxShadow:
-              '0 40px 90px -50px rgba(17,25,54,0.5), inset 0 0 0 1px rgba(231,232,238,0.85)',
+              '0 40px 90px -50px rgba(17,25,54,0.5), inset 0 1px 0 0 rgba(255,255,255,0.9), inset 0 0 0 1px rgba(231,232,238,0.85), inset 0 -14px 30px -22px rgba(110,53,197,0.35)',
           }}
           initial={{ opacity: 0, scale: 0.86 }}
-          animate={{ opacity: 1, scale: hovered ? 1.045 : 1 }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          animate={{
+            opacity: 1,
+            scale: hovered ? 1.045 : 1,
+            ...parallax(-22),
+          }}
+          transition={{
+            opacity: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
+            scale: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
+            x: { type: 'spring', damping: 28, stiffness: 55, mass: 0.9 },
+            y: { type: 'spring', damping: 28, stiffness: 55, mass: 0.9 },
+          }}
         >
           <Logo className="w-[70%]" />
         </motion.div>
