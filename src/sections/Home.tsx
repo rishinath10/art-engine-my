@@ -76,7 +76,7 @@ export function Home() {
             <motion.h1
               {...rise}
               transition={{ duration: 1.1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-7 font-display text-[clamp(2.4rem,8.2vw,3.05rem)] font-light leading-[1.04] tracking-[-0.02em] text-navy sm:text-[clamp(3rem,6vw,4rem)] lg:mt-0 lg:text-[clamp(3rem,4.4vw,4.5rem)]"
+              className="mt-7 font-display text-[clamp(2.4rem,8.2vw,3.05rem)] font-extralight leading-[1.04] tracking-[-0.02em] text-navy sm:text-[clamp(3rem,6vw,4rem)] lg:mt-0 lg:text-[clamp(3rem,4.4vw,4.5rem)]"
             >
               Different
               <span className="lg:hidden"> </span>
