@@ -112,7 +112,7 @@ export function HeroNavigation({
                 index={i}
                 compact
                 labelMode="radial"
-                outwardOffset={58}
+                outwardOffset={63}
                 wrapperStyle={{
                   left: `${50 + RING_RADIUS_COMPACT * cos}%`,
                   top: `${50 + RING_RADIUS_COMPACT * sin}%`,

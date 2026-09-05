@@ -37,6 +37,9 @@ export function NavigationNode({
   const gap = size / 2 + (compact ? 13 : 18);
   const horizontal = labelMode === 'auto' && Math.abs(direction.x) > 0.5;
   const radial = labelMode === 'radial';
+  // A radial label sits directly outward, so an outward nudge would push the
+  // enlarged node over its own first letters — lean it inward instead.
+  const pull = radial ? -5 : 6;
 
   const handleSelect = () => {
     const rect = ref.current?.getBoundingClientRect();
@@ -83,8 +86,8 @@ export function NavigationNode({
         animate={{
           scale: isActive ? 1.16 : 1,
           opacity: isDimmed ? 0.4 : 1,
-          x: isActive ? direction.x * 6 : 0,
-          y: isActive ? direction.y * 6 : 0,
+          x: isActive ? direction.x * pull : 0,
+          y: isActive ? direction.y * pull : 0,
           boxShadow: isActive
             ? '0 20px 45px -14px rgba(38, 63, 159, 0.45), 0 0 0 8px rgba(184, 162, 242, 0.16)'
             : '0 12px 32px -18px rgba(17, 25, 54, 0.4), inset 0 1px 0 0 rgba(255,255,255,0.85)',
@@ -105,7 +108,7 @@ export function NavigationNode({
       </motion.button>
 
       <motion.div
-        className={`pointer-events-none absolute z-10 ${compact ? 'w-[62px]' : 'w-[132px]'}`}
+        className={`pointer-events-none absolute z-10 ${compact ? 'w-[58px]' : 'w-[132px]'}`}
         style={
           radial
             ? {

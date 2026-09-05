@@ -128,11 +128,19 @@ export function Home() {
             <HeroNavigation onHoverChange={handleHoverChange} />
           </div>
 
-          {/* on mobile the supporting copy sits under the ring so the hub
-              stays centred in the viewport */}
-          <div className="safe-b flex min-h-0 flex-1 flex-col items-center justify-center pb-14 [@media(max-height:760px)]:pb-9 lg:hidden">
+          {/* On mobile the supporting copy sits under the ring so the hub stays
+              centred. The node preview is positioned over this same space, so
+              the copy steps aside while a node is active rather than colliding
+              with it. */}
+          <motion.div
+            animate={{ opacity: active ? 0 : 1 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className={`safe-b flex min-h-0 flex-1 flex-col items-center justify-center pb-14 [@media(max-height:760px)]:pb-9 lg:hidden ${
+              active ? 'pointer-events-none' : ''
+            }`}
+          >
             {supporting}
-          </div>
+          </motion.div>
 
           <div className="hidden lg:block" aria-hidden="true" />
         </div>
