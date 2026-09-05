@@ -13,6 +13,7 @@ import { useMediaQuery } from '../hooks/useMediaQuery';
 import { useScrollLock } from '../hooks/useScrollLock';
 import { useTransition } from '../context/TransitionContext';
 import { StoryModal } from '../components/StoryModal';
+import { TransitionLink } from '../components/TransitionLink';
 
 const rise = {
   initial: { opacity: 0, y: 26 },
@@ -198,11 +199,20 @@ export function Home() {
           {/* The right slot balances the location marker. Social icons take it
               once real profile URLs exist; until then the credit line holds it
               so the counter stays centred. */}
-          {activeSocials.length > 0 ? (
-            <SocialLinks className="gap-4 text-navy" />
-          ) : (
-            <span className="text-muted/70">© {new Date().getFullYear()} Art Engine My</span>
-          )}
+          <div className="flex items-center gap-4">
+            {activeSocials.length > 0 ? (
+              <SocialLinks className="gap-4 text-navy" />
+            ) : (
+              <span className="text-muted/70">© {new Date().getFullYear()} Art Engine My</span>
+            )}
+            <TransitionLink
+              to="/privacy"
+              data-cursor="OPEN"
+              className="rounded-sm text-muted transition-colors hover:text-purple"
+            >
+              Privacy
+            </TransitionLink>
+          </div>
         </motion.div>
       </div>
       {STORY_VIDEO_URL && <StoryModal open={storyOpen} onClose={() => setStoryOpen(false)} />}

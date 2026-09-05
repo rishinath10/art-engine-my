@@ -1,6 +1,7 @@
 import { Navigate, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { PageTransition } from '../components/PageTransition';
+import { SiteFooter } from '../components/SiteFooter';
 import { AuroraBackground } from '../components/AuroraBackground';
 import { MinimalArt } from '../components/MinimalArt';
 import { Reveal } from '../components/Reveal';
@@ -119,6 +120,7 @@ export function WorkCaseStudy() {
               />
             </TransitionLink>
           </div>
+        <SiteFooter />
         </main>
       </div>
     </PageTransition>

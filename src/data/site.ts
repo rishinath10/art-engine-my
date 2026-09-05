@@ -36,6 +36,24 @@ export const socials: SocialLink[] = [
 export const activeSocials = socials.filter((s) => s.url !== '');
 
 /**
+ * Details the privacy notice quotes. Confirm these before the notice is
+ * treated as final — an empty registration number simply omits that line.
+ */
+export const legal = {
+  entity: 'Art Engine My Solutions',
+  registrationNumber: '',
+  email: 'hello@artengine.my',
+  phone: '+60 17-392 1219',
+  address: 'Kuala Lumpur, Malaysia',
+  /** How long enquiry details are kept once a conversation ends. */
+  retention: '24 months',
+  /** Last substantive revision, shown at the head of the notice. */
+  updated: '5 September 2026',
+  /** Flip to true when analytics goes in — it turns on the measurement section. */
+  usesAnalytics: false,
+};
+
+/**
  * Embed URL for the brand film behind "Watch Our Story" — a YouTube or Vimeo
  * embed link, or a direct .mp4. While it is blank the button routes to the
  * About page instead of doing nothing.

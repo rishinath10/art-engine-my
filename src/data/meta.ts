@@ -40,6 +40,11 @@ const staticMeta: Record<string, PageMeta> = {
     description:
       'Have a project in mind? Talk to Art Engine My Solutions in Kuala Lumpur about what you want to build.',
   },
+  '/privacy': {
+    title: `Privacy Notice — ${SITE}`,
+    description:
+      'What artenginemy.com collects, what we do with it, and how to have it corrected or removed under the Personal Data Protection Act 2010.',
+  },
   '/404': {
     title: `Page Not Found — ${SITE}`,
     description: 'That address does not lead anywhere on this site.',

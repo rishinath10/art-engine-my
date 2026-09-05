@@ -4,6 +4,7 @@ import { Check, Mail, MapPin, Phone } from 'lucide-react';
 import { PageShell } from '../components/PageShell';
 import { Reveal } from '../components/Reveal';
 import { MagneticButton } from '../components/MagneticButton';
+import { PrivacyNote } from '../components/PrivacyNote';
 import { SocialLinks } from '../components/SocialLinks';
 import { activeSocials } from '../data/site';
 
@@ -140,6 +141,7 @@ export function Contact() {
                     className="pt-2"
                   >
                     <MagneticButton type="submit">Send Message</MagneticButton>
+                    <PrivacyNote className="mt-6 max-w-sm" />
                   </motion.div>
                 </motion.form>
               )}

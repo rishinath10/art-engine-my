@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { PageTransition } from './PageTransition';
+import { SiteFooter } from './SiteFooter';
 import { AuroraBackground } from './AuroraBackground';
 import { navNodes } from '../data/navigation';
 import { TransitionLink } from './TransitionLink';
@@ -89,6 +90,7 @@ export function PageShell({ eyebrow, title, intro, children, nextId }: PageShell
               <p className="mt-2 font-serif text-sm italic text-muted">{next.previewText}</p>
             </motion.div>
           )}
+        <SiteFooter />
         </main>
       </div>
     </PageTransition>

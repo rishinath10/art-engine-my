@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowLeft, Check } from 'lucide-react';
 import { PageTransition } from '../components/PageTransition';
+import { SiteFooter } from '../components/SiteFooter';
 import { AuroraBackground } from '../components/AuroraBackground';
 import { MagneticButton } from '../components/MagneticButton';
+import { PrivacyNote } from '../components/PrivacyNote';
 import { TransitionLink } from '../components/TransitionLink';
 
 const projectTypes = [
@@ -271,9 +273,11 @@ export function StartProject() {
                     {step === steps.length - 1 ? 'Send Enquiry' : 'Continue'}
                   </MagneticButton>
                 </div>
+                {step === steps.length - 1 && <PrivacyNote className="mt-8 max-w-sm" />}
               </motion.div>
             )}
           </AnimatePresence>
+        <SiteFooter />
         </main>
       </div>
     </PageTransition>

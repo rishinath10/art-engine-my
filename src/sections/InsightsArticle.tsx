@@ -3,6 +3,7 @@ import { Navigate, useParams } from 'react-router-dom';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { PageTransition } from '../components/PageTransition';
+import { SiteFooter } from '../components/SiteFooter';
 import { AuroraBackground } from '../components/AuroraBackground';
 import { MinimalArt } from '../components/MinimalArt';
 import { insights } from '../data/insights';
@@ -104,6 +105,7 @@ export function InsightsArticle() {
               />
             </TransitionLink>
           </div>
+        <SiteFooter />
         </main>
       </div>
     </PageTransition>

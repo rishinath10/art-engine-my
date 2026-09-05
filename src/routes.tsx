@@ -8,6 +8,7 @@ import { Insights } from './sections/Insights';
 import { InsightsArticle } from './sections/InsightsArticle';
 import { Contact } from './sections/Contact';
 import { StartProject } from './sections/StartProject';
+import { Privacy } from './sections/Privacy';
 import { NotFound } from './sections/NotFound';
 import { projects } from './data/projects';
 import { insights } from './data/insights';
@@ -27,6 +28,7 @@ export const appRoutes: AppRoute[] = [
   { path: '/insights/:slug', element: <InsightsArticle /> },
   { path: '/contact', element: <Contact /> },
   { path: '/start-a-project', element: <StartProject /> },
+  { path: '/privacy', element: <Privacy /> },
   // anything else — the server answers 404 and this is what it renders
   { path: '*', element: <NotFound /> },
 ];
@@ -40,6 +42,7 @@ export const staticPaths: string[] = [
   '/insights',
   '/contact',
   '/start-a-project',
+  '/privacy',
   ...projects.map((p) => `/work/${p.slug}`),
   ...insights.map((p) => `/insights/${p.slug}`),
 ];
