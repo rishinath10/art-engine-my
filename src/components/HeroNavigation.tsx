@@ -72,7 +72,7 @@ export function HeroNavigation({
 
   if (isCompact) {
     return (
-      <div className="flex w-full flex-col items-center">
+      <div className="relative flex w-full flex-col items-center">
         {/* padding reserves room for the labels, which sit outside the ring box */}
         <div className="flex w-full justify-center py-11">
         <div className="relative aspect-square w-full max-w-[min(64vw,264px,34vh)]">
@@ -137,7 +137,7 @@ export function HeroNavigation({
         </div>
         </div>
 
-        <div className="mt-3 flex min-h-[56px] w-full max-w-sm items-start justify-center px-6 text-center">
+        <div className="absolute left-1/2 top-full flex w-full max-w-sm -translate-x-1/2 items-start justify-center px-6 text-center">
           <HoverPreview hovered={hovered} />
         </div>
       </div>

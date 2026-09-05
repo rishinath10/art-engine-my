@@ -17,6 +17,30 @@ export function Home() {
   const [active, setActive] = useState<NavNode | null>(null);
   const handleHoverChange = useCallback((node: NavNode | null) => setActive(node), []);
 
+  const supporting = (
+    <motion.div
+      {...rise}
+      transition={{ duration: 1.1, delay: 0.32, ease: [0.22, 1, 0.36, 1] }}
+      className="flex flex-col items-center lg:items-start"
+    >
+      <span className="mt-8 block h-px w-12 bg-navy/20 lg:mt-9" />
+      <p className="mt-5 max-w-[19rem] text-center font-sans text-[13px] font-light leading-[1.75] tracking-wide text-muted lg:mt-6 lg:text-left">
+        We blend creativity, technology and strategy to build digital experiences that drive real
+        impact.
+      </p>
+
+      <button
+        data-cursor="PLAY"
+        className="group mt-7 flex items-center gap-4 font-sans text-[10px] font-normal uppercase tracking-[0.24em] text-navy lg:mt-11"
+      >
+        <span className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-purple to-royal text-white transition-transform duration-500 group-hover:scale-110">
+          <Play size={12} fill="currentColor" />
+        </span>
+        Watch Our Story
+      </button>
+    </motion.div>
+  );
+
   return (
     <PageTransition>
       <div className="relative h-dvh w-full overflow-hidden bg-offwhite">
@@ -64,7 +88,7 @@ export function Home() {
         </motion.div>
 
         <div className="relative z-10 flex h-full flex-col px-6 lg:grid lg:grid-cols-[0.95fr_1.15fr_0.62fr] lg:items-center lg:gap-8 lg:px-12 xl:px-16">
-          <div className="flex min-h-0 flex-1 flex-col items-center justify-center pt-8 text-center lg:flex-none lg:items-start lg:pt-0 lg:text-left">
+          <div className="flex min-h-0 flex-1 flex-col items-center justify-center pt-10 text-center lg:flex-none lg:justify-start lg:items-start lg:pt-0 lg:text-left">
             <motion.p
               {...rise}
               transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
@@ -91,32 +115,17 @@ export function Home() {
               </span>
             </motion.h1>
 
-            <motion.div
-              {...rise}
-              transition={{ duration: 1.1, delay: 0.32, ease: [0.22, 1, 0.36, 1] }}
-              className="flex flex-col items-center lg:items-start"
-            >
-              <span className="mt-6 block h-px w-12 bg-navy/20 lg:mt-9" />
-              <p className="mt-4 max-w-[19rem] font-sans text-[13px] font-light leading-[1.75] tracking-wide text-muted [@media(max-height:700px)]:hidden lg:mt-6 lg:block">
-                We blend creativity, technology and strategy to build digital experiences that
-                drive real impact.
-              </p>
-
-              <button
-                data-cursor="PLAY"
-                className="group mt-6 flex items-center gap-4 font-sans text-[10px] font-normal uppercase tracking-[0.24em] text-navy [@media(max-height:700px)]:hidden lg:mt-11 lg:flex"
-              >
-                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-purple to-royal text-white transition-transform duration-500 group-hover:scale-110">
-                  <Play size={12} fill="currentColor" />
-                </span>
-                Watch Our Story
-              </button>
-            </motion.div>
+            <div className="hidden lg:block">{supporting}</div>
           </div>
 
-          <div className="safe-b flex shrink-0 flex-col items-center justify-end pb-16 [@media(max-height:700px)]:pb-8 lg:flex-1 lg:justify-center lg:pb-0">
-            <span className="mb-3 block h-px w-16 bg-navy/12 lg:hidden" />
+          <div className="flex shrink-0 items-center justify-center lg:flex-1">
             <HeroNavigation onHoverChange={handleHoverChange} />
+          </div>
+
+          {/* on mobile the supporting copy sits under the ring so the hub
+              stays centred in the viewport */}
+          <div className="safe-b flex min-h-0 flex-1 flex-col items-center justify-center pb-14 lg:hidden">
+            <div className="[@media(max-height:760px)]:hidden">{supporting}</div>
           </div>
 
           <div className="hidden lg:block" aria-hidden="true" />
