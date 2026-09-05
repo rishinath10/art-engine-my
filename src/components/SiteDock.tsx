@@ -13,13 +13,22 @@ export function SiteDock() {
 
   return (
     <>
+      {/* The glass treatment disappeared against the white sections, so the
+          home button carries the brand gradient and a white mark instead —
+          the one element on an interior page that must always be findable. */}
       <TransitionLink
         to="/"
         data-cursor="HUB"
-        className="safe-t safe-x fixed left-6 top-6 z-50 flex h-14 w-14 items-center justify-center rounded-full border border-white/70 bg-white/55 backdrop-blur-xl transition-transform duration-300 hover:scale-105 active:scale-95 md:left-10 md:top-8"
+        className="safe-t safe-x fixed left-6 top-6 z-50 flex h-14 w-14 items-center justify-center rounded-full border border-white/25 bg-gradient-to-br from-purple to-royal transition-transform duration-300 hover:scale-105 active:scale-95 md:left-10 md:top-8"
+        style={{
+          boxShadow:
+            '0 16px 36px -14px rgba(38, 63, 159, 0.55), inset 0 1px 0 0 rgba(255,255,255,0.25)',
+        }}
         aria-label="Back to home"
       >
-        <LogoMark size={28} />
+        {/* brightness(0) flattens the mark to black, invert(1) lifts it to
+            white — the alpha channel, and so the letterforms, survive both. */}
+        <LogoMark size={28} className="brightness-0 invert" />
       </TransitionLink>
 
       <nav
