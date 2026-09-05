@@ -1,93 +1,179 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Mail, MapPin, Phone } from 'lucide-react';
-import { PageTransition } from '../components/PageTransition';
-import { AuroraBackground } from '../components/AuroraBackground';
+import { Check, Mail, MapPin, Phone } from 'lucide-react';
+import { PageShell } from '../components/PageShell';
+import { Reveal } from '../components/Reveal';
 import { MagneticButton } from '../components/MagneticButton';
+import { InstagramIcon, LinkedInIcon, YouTubeIcon } from '../components/SocialIcons';
+
+const details = [
+  { icon: Mail, label: 'hello@artengine.my', href: 'mailto:hello@artengine.my' },
+  { icon: Phone, label: '+60 17-392 1219', href: 'tel:+60173921219' },
+  { icon: MapPin, label: 'Kuala Lumpur, Malaysia' },
+];
+
+const field =
+  'w-full border-b border-navy/12 bg-transparent py-4 font-sans text-[15px] font-light text-navy outline-none transition-colors duration-300 placeholder:text-muted/60 focus:border-purple';
 
 export function Contact() {
   const [open, setOpen] = useState(false);
   const [sent, setSent] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSent(true);
-  };
-
   return (
-    <PageTransition>
-      <div className="relative min-h-screen bg-offwhite px-6 pb-24 pt-32 md:px-16 md:pt-40 lg:px-24">
-        <AuroraBackground />
-        <div className="relative z-10 mx-auto max-w-2xl">
-          <p className="text-xs uppercase tracking-[0.3em] text-purple">Let's Create</p>
-          <h1 className="mt-6 font-display text-4xl leading-[1.1] text-navy sm:text-5xl md:text-6xl">
-            Let's Create
-            <br />What's Next
-          </h1>
-          <p className="mt-6 text-lg text-muted">
-            Have a project in mind? We'd love to hear from you.
-          </p>
-
-          <div className="mt-10 flex flex-col gap-3 text-navy">
-            <a href="mailto:hello@artengine.my" className="flex items-center gap-3 hover:text-purple">
-              <Mail size={18} /> hello@artengine.my
-            </a>
-            <a href="tel:+60173921219" className="flex items-center gap-3 hover:text-purple">
-              <Phone size={18} /> +60 17-392 1219
-            </a>
-            <span className="flex items-center gap-3 text-muted">
-              <MapPin size={18} /> Kuala Lumpur, Malaysia
-            </span>
+    <PageShell
+      eyebrow="05 — Let's Create"
+      title={
+        <>
+          Let's Create
+          <br />
+          <span className="italic">What's Next</span>
+        </>
+      }
+      intro="Have a project in mind? We'd love to hear from you."
+      nextId="start-a-project"
+    >
+      <div className="grid gap-16 lg:grid-cols-[0.9fr_1.1fr] lg:gap-24">
+        <Reveal>
+          <div className="space-y-7">
+            {details.map(({ icon: Icon, label, href }) => {
+              const content = (
+                <span className="flex items-center gap-4">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full border border-white/70 bg-white/50 text-royal backdrop-blur-xl transition-colors duration-500 group-hover:text-purple">
+                    <Icon size={16} strokeWidth={1.6} />
+                  </span>
+                  <span className="font-sans text-[15px] font-light text-navy transition-colors duration-500 group-hover:text-purple">
+                    {label}
+                  </span>
+                </span>
+              );
+              return href ? (
+                <a key={label} href={href} data-cursor="OPEN" className="group block">
+                  {content}
+                </a>
+              ) : (
+                <div key={label} className="group block">
+                  {content}
+                </div>
+              );
+            })}
           </div>
 
-          <div className="mt-12">
-            {!open && (
-              <MagneticButton onClick={() => setOpen(true)}>Get in Touch</MagneticButton>
-            )}
+          <div className="mt-14 border-t border-navy/10 pt-8">
+            <p className="font-sans text-[10px] uppercase tracking-[0.26em] text-muted">
+              Elsewhere
+            </p>
+            <div className="mt-5 flex items-center gap-5 text-navy">
+              <a href="#" data-cursor="VISIT" aria-label="LinkedIn" className="hover:text-purple">
+                <LinkedInIcon />
+              </a>
+              <a href="#" data-cursor="VISIT" aria-label="Instagram" className="hover:text-purple">
+                <InstagramIcon />
+              </a>
+              <a href="#" data-cursor="VISIT" aria-label="YouTube" className="hover:text-purple">
+                <YouTubeIcon />
+              </a>
+            </div>
           </div>
+        </Reveal>
 
-          <AnimatePresence>
-            {open && (
-              <motion.form
-                onSubmit={handleSubmit}
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                className="mt-4 overflow-hidden"
-              >
-                {sent ? (
-                  <div className="rounded-3xl border border-purple-light/40 bg-white p-10 text-center">
-                    <p className="font-display text-2xl text-navy">Thank you.</p>
-                    <p className="mt-2 text-muted">We'll be in touch shortly.</p>
+        <Reveal delay={0.12}>
+          <div className="rounded-[2.5rem] border border-white/70 bg-white/40 p-9 backdrop-blur-2xl md:p-12">
+            <AnimatePresence mode="wait">
+              {!open && !sent && (
+                <motion.div
+                  key="invite"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <h2 className="font-display text-[clamp(1.6rem,3vw,2.3rem)] font-light leading-tight text-navy">
+                    Tell us what you're
+                    <br />
+                    <span className="italic">thinking about</span>
+                  </h2>
+                  <p className="mt-4 max-w-sm font-sans text-[14px] font-light leading-[1.85] text-muted">
+                    A sentence is enough to start. We'll come back with questions, not a
+                    boilerplate proposal.
+                  </p>
+                  <div className="mt-9">
+                    <MagneticButton onClick={() => setOpen(true)}>Get in Touch</MagneticButton>
                   </div>
-                ) : (
-                  <div className="space-y-5 rounded-3xl border border-navy/10 bg-white p-8">
-                    <input
-                      required
-                      placeholder="Your name"
-                      className="w-full border-b border-navy/10 bg-transparent py-3 outline-none placeholder:text-muted/70 focus:border-purple"
+                </motion.div>
+              )}
+
+              {open && !sent && (
+                <motion.form
+                  key="form"
+                  initial={{ opacity: 0, y: 18 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setSent(true);
+                  }}
+                  className="space-y-6"
+                >
+                  {[
+                    { placeholder: 'Your name', type: 'text' },
+                    { placeholder: 'Email address', type: 'email' },
+                    { placeholder: 'Company (optional)', type: 'text', optional: true },
+                  ].map((f, i) => (
+                    <motion.input
+                      key={f.placeholder}
+                      required={!f.optional}
+                      type={f.type}
+                      placeholder={f.placeholder}
+                      initial={{ opacity: 0, y: 14 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: 0.08 * i, ease: [0.22, 1, 0.36, 1] }}
+                      className={field}
                     />
-                    <input
-                      required
-                      type="email"
-                      placeholder="Email address"
-                      className="w-full border-b border-navy/10 bg-transparent py-3 outline-none placeholder:text-muted/70 focus:border-purple"
-                    />
-                    <textarea
-                      required
-                      rows={4}
-                      placeholder="Tell us a little about your project"
-                      className="w-full resize-none border-b border-navy/10 bg-transparent py-3 outline-none placeholder:text-muted/70 focus:border-purple"
-                    />
+                  ))}
+                  <motion.textarea
+                    required
+                    rows={4}
+                    placeholder="Tell us a little about your project"
+                    initial={{ opacity: 0, y: 14 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
+                    className={`${field} resize-none`}
+                  />
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.6, delay: 0.32 }}
+                    className="pt-2"
+                  >
                     <MagneticButton type="submit">Send Message</MagneticButton>
+                  </motion.div>
+                </motion.form>
+              )}
+
+              {sent && (
+                <motion.div
+                  key="sent"
+                  initial={{ opacity: 0, y: 18 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                  className="py-6 text-center"
+                >
+                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-white/70 bg-white/60 backdrop-blur-xl">
+                    <Check className="text-purple" />
                   </div>
-                )}
-              </motion.form>
-            )}
-          </AnimatePresence>
-        </div>
+                  <h2 className="mt-8 font-display text-[clamp(1.6rem,3vw,2.2rem)] font-light text-navy">
+                    Thank you.
+                  </h2>
+                  <p className="mt-3 font-serif text-base italic text-muted">
+                    We'll be in touch within one business day.
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </Reveal>
       </div>
-    </PageTransition>
+    </PageShell>
   );
 }

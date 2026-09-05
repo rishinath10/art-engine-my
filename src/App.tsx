@@ -1,9 +1,10 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { CustomCursor } from './components/CustomCursor';
 import { SiteDock } from './components/SiteDock';
 import { TransitionProvider } from './context/TransitionContext';
+import { Preloader } from './components/Preloader';
 import { Home } from './sections/Home';
 
 // Destinations load on demand so the hub paints as early as possible.
@@ -26,9 +27,15 @@ function App() {
   const location = useLocation();
   const isHub = location.pathname === '/';
 
+  // the transition overlay covers the screen while this happens
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }, [location.pathname]);
+
   return (
     <TransitionProvider>
       <div className="cursor-enabled relative">
+        <Preloader />
         <CustomCursor />
         {!isHub && <SiteDock />}
         <Suspense fallback={<div className="min-h-dvh bg-offwhite" />}>

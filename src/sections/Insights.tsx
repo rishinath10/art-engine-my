@@ -1,38 +1,114 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+
+import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
-import { PageTransition } from '../components/PageTransition';
-import { AuroraBackground } from '../components/AuroraBackground';
+import { PageShell } from '../components/PageShell';
+import { Reveal } from '../components/Reveal';
+import { AbstractForm } from '../components/AbstractForm';
 import { insights } from '../data/insights';
+import { TransitionLink } from '../components/TransitionLink';
 
 export function Insights() {
-  return (
-    <PageTransition>
-      <div className="relative min-h-screen bg-offwhite px-6 pb-24 pt-32 md:px-16 md:pt-40 lg:px-24">
-        <AuroraBackground />
-        <div className="relative z-10">
-          <p className="text-xs uppercase tracking-[0.3em] text-purple">Ideas & Trends</p>
-          <h1 className="mt-6 max-w-2xl font-display text-4xl leading-[1.1] text-navy sm:text-5xl md:text-6xl">
-            Perspectives for
-            <br />a Digital Tomorrow
-          </h1>
+  const [hovered, setHovered] = useState<string | null>(null);
+  const [lead, ...rest] = insights;
 
-          <div className="mt-16 grid gap-10 md:grid-cols-3">
-            {insights.map((post) => (
-              <Link key={post.slug} to={`/insights/${post.slug}`} data-cursor="READ" className="group">
-                <div className="aspect-[4/3] w-full rounded-2xl bg-gradient-to-br from-lavender to-purple-light transition-transform duration-500 group-hover:-translate-y-1" />
-                <p className="mt-5 text-xs uppercase tracking-[0.2em] text-muted">
-                  {post.category} · {post.date}
-                </p>
-                <h2 className="mt-2 flex items-start justify-between gap-3 font-display text-xl text-navy group-hover:text-purple">
-                  {post.title}
-                  <ArrowUpRight className="mt-1 shrink-0 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" size={18} />
-                </h2>
-                <p className="mt-3 text-sm text-muted">{post.excerpt}</p>
-              </Link>
-            ))}
+  return (
+    <PageShell
+      eyebrow="04 — Ideas & Trends"
+      title={
+        <>
+          Perspectives for
+          <br />
+          <span className="italic">a Digital Tomorrow</span>
+        </>
+      }
+      intro="Thinking on AI, digitalization and the craft of building digital experiences that last."
+      nextId="contact"
+    >
+      <Reveal>
+        <TransitionLink
+          to={`/insights/${lead.slug}`}
+          data-cursor="READ"
+          onMouseEnter={() => setHovered(lead.slug)}
+          onMouseLeave={() => setHovered(null)}
+          className="group grid gap-10 border-t border-navy/10 pt-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16"
+        >
+          <div>
+            <p className="font-sans text-[10px] uppercase tracking-[0.24em] text-royal/70">
+              Latest · {lead.category} · {lead.readTime}
+            </p>
+            <h2 className="mt-5 max-w-xl font-display text-[clamp(1.9rem,4vw,3rem)] font-light leading-[1.1] text-navy transition-colors duration-500 group-hover:text-purple">
+              {lead.title}
+            </h2>
+            <p className="mt-6 max-w-lg font-sans text-[15px] font-light leading-[1.9] text-muted">
+              {lead.excerpt}
+            </p>
+            <span className="mt-8 inline-flex items-center gap-3 font-sans text-[10px] uppercase tracking-[0.22em] text-navy">
+              Read the piece
+              <ArrowUpRight
+                size={15}
+                className="transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1"
+              />
+            </span>
           </div>
-        </div>
+
+          <motion.div
+            animate={{ y: hovered === lead.slug ? -8 : 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="aspect-[5/4] overflow-hidden rounded-[2.5rem] border border-white/70"
+          >
+            <motion.div
+              className="h-full w-full"
+              animate={{ scale: hovered === lead.slug ? 1.06 : 1 }}
+              transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <AbstractForm className="h-full w-full" seed={2} />
+            </motion.div>
+          </motion.div>
+        </TransitionLink>
+      </Reveal>
+
+      <div className="mt-20 grid gap-12 md:grid-cols-2">
+        {rest.map((post, i) => (
+          <Reveal key={post.slug} delay={i * 0.1}>
+            <TransitionLink
+              to={`/insights/${post.slug}`}
+              data-cursor="READ"
+              onMouseEnter={() => setHovered(post.slug)}
+              onMouseLeave={() => setHovered(null)}
+              className="group block border-t border-navy/10 pt-8"
+            >
+              <motion.div
+                animate={{ y: hovered === post.slug ? -6 : 0 }}
+                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                className="aspect-[16/10] overflow-hidden rounded-3xl border border-white/70"
+              >
+                <motion.div
+                  className="h-full w-full"
+                  animate={{ scale: hovered === post.slug ? 1.06 : 1 }}
+                  transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <AbstractForm className="h-full w-full" seed={i === 0 ? 1 : 3} />
+                </motion.div>
+              </motion.div>
+
+              <p className="mt-6 font-sans text-[10px] uppercase tracking-[0.24em] text-royal/70">
+                {post.category} · {post.readTime}
+              </p>
+              <h2 className="mt-3 flex items-start justify-between gap-4 font-display text-[clamp(1.4rem,2.4vw,1.9rem)] font-light leading-tight text-navy transition-colors duration-500 group-hover:text-purple">
+                {post.title}
+                <ArrowUpRight
+                  size={20}
+                  className="mt-1 shrink-0 opacity-40 transition-all duration-500 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:opacity-100"
+                />
+              </h2>
+              <p className="mt-4 font-sans text-[14px] font-light leading-[1.85] text-muted">
+                {post.excerpt}
+              </p>
+            </TransitionLink>
+          </Reveal>
+        ))}
       </div>
-    </PageTransition>
+    </PageShell>
   );
 }

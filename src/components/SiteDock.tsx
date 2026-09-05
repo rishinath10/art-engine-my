@@ -1,7 +1,8 @@
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { LogoMark } from './Logo';
 import { navNodes } from '../data/navigation';
+import { TransitionLink } from './TransitionLink';
 
 /**
  * Minimal, persistent way to return to the central hub and jump between
@@ -12,14 +13,14 @@ export function SiteDock() {
 
   return (
     <>
-      <Link
+      <TransitionLink
         to="/"
         data-cursor="HUB"
         className="safe-t safe-x fixed left-6 top-6 z-50 flex h-14 w-14 items-center justify-center rounded-full border border-white/70 bg-white/55 backdrop-blur-xl transition-transform duration-300 hover:scale-105 active:scale-95 md:left-10 md:top-8"
         aria-label="Back to home"
       >
         <LogoMark size={28} />
-      </Link>
+      </TransitionLink>
 
       <nav
         className="fixed bottom-6 right-6 z-50 hidden flex-col items-end gap-2 md:flex md:bottom-10 md:right-10"
@@ -28,7 +29,7 @@ export function SiteDock() {
         {navNodes.map((node) => {
           const active = location.pathname === node.path;
           return (
-            <Link
+            <TransitionLink
               key={node.id}
               to={node.path}
               data-cursor="OPEN"
@@ -47,7 +48,7 @@ export function SiteDock() {
                 }`}
                 whileHover={{ scale: 1.6 }}
               />
-            </Link>
+            </TransitionLink>
           );
         })}
       </nav>

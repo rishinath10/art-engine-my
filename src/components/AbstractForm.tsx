@@ -11,10 +11,21 @@ interface AbstractFormProps {
  * specular highlights, standing in for photography. Two variants (seed) so
  * pages don't repeat the same composition.
  */
+/** Four palettes across the brand range so repeated forms never read as clones. */
+const palettes = [
+  { a: '#EAE4FA', b: '#B8A2F2', c: '#6E35C5', d: '#263F9F', e: '#111936' },
+  { a: '#E7ECFB', b: '#9FB0E8', c: '#3B57C4', d: '#1B2A6B', e: '#0F1636' },
+  { a: '#F1E9FD', b: '#C4A9F5', c: '#8B5FD6', d: '#5A2AA6', e: '#2A1B57' },
+  { a: '#EDE7FB', b: '#A8B4EA', c: '#5C4BC8', d: '#6E35C5', e: '#171F45' },
+];
+
 export function AbstractForm({ className = '', seed = 0 }: AbstractFormProps) {
   const reduced = useReducedMotion();
-  const id = `af${seed}`;
-  const flip = seed % 2 === 1;
+  const variant = ((seed % palettes.length) + palettes.length) % palettes.length;
+  const pal = palettes[variant];
+  const id = `af${variant}`;
+  const flip = variant % 2 === 1;
+  const tilt = [0, -3, 2, -2][variant];
 
   const drift = (range: number, duration: number) =>
     reduced
@@ -33,21 +44,21 @@ export function AbstractForm({ className = '', seed = 0 }: AbstractFormProps) {
     >
       <defs>
         <linearGradient id={`${id}-core`} x1="0.1" y1="0" x2="0.9" y2="1">
-          <stop offset="0%" stopColor="#EAE4FA" />
-          <stop offset="26%" stopColor="#B8A2F2" />
-          <stop offset="55%" stopColor="#6E35C5" />
-          <stop offset="82%" stopColor="#263F9F" />
-          <stop offset="100%" stopColor="#111936" />
+          <stop offset="0%" stopColor={pal.a} />
+          <stop offset="26%" stopColor={pal.b} />
+          <stop offset="55%" stopColor={pal.c} />
+          <stop offset="82%" stopColor={pal.d} />
+          <stop offset="100%" stopColor={pal.e} />
         </linearGradient>
         <linearGradient id={`${id}-ribbon`} x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.85" />
-          <stop offset="40%" stopColor="#B8A2F2" stopOpacity="0.5" />
-          <stop offset="78%" stopColor="#263F9F" stopOpacity="0.45" />
-          <stop offset="100%" stopColor="#111936" stopOpacity="0.35" />
+          <stop offset="40%" stopColor={pal.b} stopOpacity="0.5" />
+          <stop offset="78%" stopColor={pal.d} stopOpacity="0.45" />
+          <stop offset="100%" stopColor={pal.e} stopOpacity="0.35" />
         </linearGradient>
         <linearGradient id={`${id}-deep`} x1="0.2" y1="0" x2="0.8" y2="1">
-          <stop offset="0%" stopColor="#263F9F" stopOpacity="0.6" />
-          <stop offset="100%" stopColor="#111936" stopOpacity="0.6" />
+          <stop offset="0%" stopColor={pal.d} stopOpacity="0.6" />
+          <stop offset="100%" stopColor={pal.e} stopOpacity="0.6" />
         </linearGradient>
         <radialGradient id={`${id}-spec`} cx="0.34" cy="0.26" r="0.42">
           <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.9" />
@@ -55,8 +66,8 @@ export function AbstractForm({ className = '', seed = 0 }: AbstractFormProps) {
           <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
         </radialGradient>
         <radialGradient id={`${id}-sheen`} cx="0.7" cy="0.75" r="0.5">
-          <stop offset="0%" stopColor="#EAE4FA" stopOpacity="0.6" />
-          <stop offset="100%" stopColor="#EAE4FA" stopOpacity="0" />
+          <stop offset="0%" stopColor={pal.a} stopOpacity="0.6" />
+          <stop offset="100%" stopColor={pal.a} stopOpacity="0" />
         </radialGradient>
         <filter id={`${id}-soft`} x="-30%" y="-30%" width="160%" height="160%">
           <feGaussianBlur stdDeviation="26" />
@@ -66,7 +77,8 @@ export function AbstractForm({ className = '', seed = 0 }: AbstractFormProps) {
         </filter>
       </defs>
 
-      <g transform={flip ? 'translate(600,0) scale(-1,1)' : undefined}>
+      <g transform={`rotate(${tilt} 300 450)`}>
+        <g transform={flip ? 'translate(600, 0) scale(-1, 1)' : undefined}>
         {/* deep shadow mass */}
         <motion.ellipse
           cx="330"
@@ -117,7 +129,8 @@ export function AbstractForm({ className = '', seed = 0 }: AbstractFormProps) {
           fill="none"
           strokeLinecap="round"
           {...drift(10, 27)}
-        />
+          />
+        </g>
       </g>
     </svg>
   );

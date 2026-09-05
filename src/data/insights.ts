@@ -3,6 +3,7 @@ export interface Insight {
   title: string;
   category: string;
   date: string;
+  readTime: string;
   excerpt: string;
   body: string[];
 }
@@ -13,6 +14,7 @@ export const insights: Insight[] = [
     title: 'The Rise of Agentic AI in Business',
     category: 'Artificial Intelligence',
     date: 'August 2026',
+    readTime: '4 min read',
     excerpt:
       'Agentic AI is moving from experiment to infrastructure. Here’s what that shift actually means for how businesses operate.',
     body: [
@@ -26,6 +28,7 @@ export const insights: Insight[] = [
     title: 'Why Digitalization Matters More Than Ever',
     category: 'Digital Transformation',
     date: 'July 2026',
+    readTime: '3 min read',
     excerpt:
       'Digitalization is no longer a competitive advantage. It is the baseline cost of staying relevant.',
     body: [
@@ -39,6 +42,7 @@ export const insights: Insight[] = [
     title: 'Creating Digital Experiences That Last',
     category: 'Design & Strategy',
     date: 'June 2026',
+    readTime: '5 min read',
     excerpt:
       'Trends fade. The digital experiences that endure are built on clarity, craft and a real understanding of the people using them.',
     body: [
