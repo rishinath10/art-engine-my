@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useMediaQuery } from '../hooks/useMediaQuery';
+import { Particles } from './Particles';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 
 interface Cloud {
@@ -64,7 +65,13 @@ const clouds: Cloud[] = [
  * Ambient aurora: large colour clouds drifting and morphing behind the whole
  * interface. Animates transform/opacity only so it stays cheap to composite.
  */
-export function AuroraBackground({ className = '' }: { className?: string }) {
+export function AuroraBackground({
+  className = '',
+  particles = true,
+}: {
+  className?: string;
+  particles?: boolean;
+}) {
   const isSmall = useMediaQuery('(max-width: 767px)');
   const reduced = useReducedMotion();
 
@@ -98,6 +105,7 @@ export function AuroraBackground({ className = '' }: { className?: string }) {
           }}
         />
       ))}
+      {particles && <Particles />}
       {!isSmall && (
         <motion.div
           className="absolute left-1/2 top-1/2 h-[120vh] w-[120vh] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-[0.03] blur-[80px]"

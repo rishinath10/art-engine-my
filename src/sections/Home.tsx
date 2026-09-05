@@ -7,6 +7,8 @@ import { PageTransition } from '../components/PageTransition';
 import { AuroraBackground } from '../components/AuroraBackground';
 import { ParallaxPanel } from '../components/ParallaxPanel';
 import { HeroNavigation } from '../components/HeroNavigation';
+import { useMediaQuery } from '../hooks/useMediaQuery';
+import { useScrollLock } from '../hooks/useScrollLock';
 
 const rise = {
   initial: { opacity: 0, y: 26 },
@@ -16,6 +18,10 @@ const rise = {
 export function Home() {
   const [active, setActive] = useState<NavNode | null>(null);
   const handleHoverChange = useCallback((node: NavNode | null) => setActive(node), []);
+  const isCompact = useMediaQuery('(max-width: 1023px)');
+
+  // the hub fits the viewport exactly, so nothing below it is worth scrolling to
+  useScrollLock(isCompact);
 
   const supporting = (
     <motion.div

@@ -1,33 +1,20 @@
-import { lazy, Suspense, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { CustomCursor } from './components/CustomCursor';
 import { SiteDock } from './components/SiteDock';
 import { TransitionProvider } from './context/TransitionContext';
 import { Preloader } from './components/Preloader';
-import { Home } from './sections/Home';
-
-// Destinations load on demand so the hub paints as early as possible.
-const About = lazy(() => import('./sections/About').then((m) => ({ default: m.About })));
-const Services = lazy(() => import('./sections/Services').then((m) => ({ default: m.Services })));
-const Work = lazy(() => import('./sections/Work').then((m) => ({ default: m.Work })));
-const WorkCaseStudy = lazy(() =>
-  import('./sections/WorkCaseStudy').then((m) => ({ default: m.WorkCaseStudy })),
-);
-const Insights = lazy(() => import('./sections/Insights').then((m) => ({ default: m.Insights })));
-const InsightsArticle = lazy(() =>
-  import('./sections/InsightsArticle').then((m) => ({ default: m.InsightsArticle })),
-);
-const Contact = lazy(() => import('./sections/Contact').then((m) => ({ default: m.Contact })));
-const StartProject = lazy(() =>
-  import('./sections/StartProject').then((m) => ({ default: m.StartProject })),
-);
+import { appRoutes } from './routes';
+import { useDocumentMeta } from './hooks/useDocumentMeta';
 
 function App() {
   const location = useLocation();
   const isHub = location.pathname === '/';
 
-  // the transition overlay covers the screen while this happens
+  useDocumentMeta();
+
+  // the veil covers the screen while this happens
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
   }, [location.pathname]);
@@ -38,21 +25,15 @@ function App() {
         <Preloader />
         <CustomCursor />
         {!isHub && <SiteDock />}
-        <Suspense fallback={<div className="min-h-dvh bg-offwhite" />}>
-          <AnimatePresence initial={false}>
-            <Routes location={location} key={location.pathname}>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/work" element={<Work />} />
-              <Route path="/work/:slug" element={<WorkCaseStudy />} />
-              <Route path="/insights" element={<Insights />} />
-              <Route path="/insights/:slug" element={<InsightsArticle />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/start-a-project" element={<StartProject />} />
-            </Routes>
-          </AnimatePresence>
-        </Suspense>
+        {/* wait: the outgoing page leaves before the next arrives, so two
+            full-page backgrounds are never composited at once */}
+        <AnimatePresence mode="wait" initial={false}>
+          <Routes location={location} key={location.pathname}>
+            {appRoutes.map((route) => (
+              <Route key={route.path} path={route.path} element={route.element} />
+            ))}
+          </Routes>
+        </AnimatePresence>
       </div>
     </TransitionProvider>
   );

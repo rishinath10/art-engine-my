@@ -12,6 +12,7 @@ export function WorkCaseStudy() {
   const index = projects.findIndex((p) => p.slug === slug);
   const project = projects[index];
 
+
   if (!project) return <Navigate to="/work" replace />;
 
   const next = projects[(index + 1) % projects.length];

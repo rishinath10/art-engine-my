@@ -5,6 +5,7 @@ interface TransitionState {
   active: boolean;
   x: number;
   y: number;
+  size: number;
 }
 
 interface TransitionContextValue {
@@ -19,23 +20,34 @@ export function useTransition() {
   return ctx;
 }
 
+const idle: TransitionState = { active: false, x: 0, y: 0, size: 0 };
+
 export function TransitionProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<TransitionState>({ active: false, x: 0, y: 0 });
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [state, setState] = useState<TransitionState>(idle);
+  const pending = useRef<(() => void) | null>(null);
 
   const runTransition = useCallback((x: number, y: number, onCovered: () => void) => {
-    setState({ active: true, x, y });
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => {
+    if (typeof window === 'undefined') {
       onCovered();
-      setTimeout(() => setState((s) => ({ ...s, active: false })), 550);
-    }, 420);
+      return;
+    }
+    // the circle has to reach the furthest corner from the click point
+    const reach = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y),
+    );
+    pending.current = onCovered;
+    setState({ active: true, x, y, size: Math.ceil(reach * 2) + 40 });
   }, []);
 
-  const maxDim =
-    typeof window !== 'undefined'
-      ? Math.hypot(Math.max(state.x, window.innerWidth - state.x), Math.max(state.y, window.innerHeight - state.y)) * 2.2
-      : 2000;
+  // Fires the moment the veil actually covers the screen, so the route swap is
+  // never visible — the old timing-based guess could change the page mid-sweep.
+  const handleCovered = () => {
+    if (!pending.current) return;
+    pending.current();
+    pending.current = null;
+    requestAnimationFrame(() => setState((s) => ({ ...s, active: false })));
+  };
 
   return (
     <TransitionContext.Provider value={{ runTransition }}>
@@ -43,14 +55,25 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
       <AnimatePresence>
         {state.active && (
           <motion.div
-            className="pointer-events-none fixed inset-0 z-[900]"
+            key="veil"
+            aria-hidden="true"
+            className="pointer-events-none fixed z-[900] rounded-full"
             style={{
-              background: 'radial-gradient(circle, #6E35C5 0%, #263F9F 55%, #111936 100%)',
+              left: state.x,
+              top: state.y,
+              width: state.size,
+              height: state.size,
+              marginLeft: -state.size / 2,
+              marginTop: -state.size / 2,
+              willChange: 'transform, opacity',
+              background:
+                'radial-gradient(circle at 50% 45%, #6E35C5 0%, #3B4BAE 48%, #111936 100%)',
             }}
-            initial={{ clipPath: `circle(0px at ${state.x}px ${state.y}px)` }}
-            animate={{ clipPath: `circle(${maxDim}px at ${state.x}px ${state.y}px)` }}
-            exit={{ opacity: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } }}
-            transition={{ duration: 0.75, ease: [0.65, 0, 0.35, 1] }}
+            initial={{ scale: 0, opacity: 1 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.62, ease: [0.33, 1, 0.68, 1] } }}
+            transition={{ duration: 0.66, ease: [0.76, 0, 0.24, 1] }}
+            onAnimationComplete={handleCovered}
           />
         )}
       </AnimatePresence>

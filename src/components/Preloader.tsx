@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Logo } from './Logo';
+import { useScrollLock } from '../hooks/useScrollLock';
 
 const MIN_DURATION = 1100;
 
@@ -30,12 +31,8 @@ export function Preloader() {
     };
   }, []);
 
-  useEffect(() => {
-    document.body.style.overflow = done ? '' : 'hidden';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [done]);
+  // shares the refcounted lock with the hub, so neither releases the other's
+  useScrollLock(!done);
 
   return (
     <AnimatePresence>
