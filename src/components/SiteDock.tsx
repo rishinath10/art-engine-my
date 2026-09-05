@@ -18,7 +18,7 @@ export function SiteDock() {
         className="fixed left-6 top-6 z-50 flex h-14 w-14 items-center justify-center rounded-full border border-navy/10 bg-white/70 backdrop-blur-md transition-transform duration-300 hover:scale-105 md:left-10 md:top-8"
         aria-label="Back to home"
       >
-        <LogoMark size={30} />
+        <LogoMark size={28} />
       </Link>
 
       <nav

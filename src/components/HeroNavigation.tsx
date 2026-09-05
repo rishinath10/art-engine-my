@@ -56,14 +56,14 @@ export function HeroNavigation() {
           style={{
             x: '-50%',
             y: '-50%',
-            width: '46%',
-            height: '46%',
+            width: '50%',
+            height: '50%',
             boxShadow: '0 30px 80px -40px rgba(17,25,54,0.45), inset 0 0 0 1px rgba(231,232,238,0.9)',
           }}
           animate={{ scale: hovered ? 1.05 : 1 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
-          <Logo size={72} />
+          <Logo className="w-[72%]" />
         </motion.div>
 
         {navNodes.map((node) => (
