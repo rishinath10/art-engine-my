@@ -9,7 +9,9 @@ import { useMediaQuery } from '../hooks/useMediaQuery';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { usePointer } from '../hooks/usePointer';
 
-const RING_RADIUS = 38;
+const RING_RADIUS = 42;
+/** the compact ring runs slightly tighter so labels clear a 360px screen */
+const RING_RADIUS_COMPACT = 41;
 
 function HoverPreview({ hovered }: { hovered: NavNode | null }) {
   return (
@@ -85,7 +87,7 @@ export function HeroNavigation({
             <motion.circle
               cx="50"
               cy="50"
-              r={RING_RADIUS}
+              r={RING_RADIUS_COMPACT}
               stroke={hovered ? '#6E35C5' : '#111936'}
               strokeOpacity={hovered ? 0.34 : 0.16}
               strokeWidth="0.3"
@@ -102,7 +104,7 @@ export function HeroNavigation({
 
           <motion.div
             className="absolute left-1/2 top-1/2 z-10 flex items-center justify-center"
-            style={{ width: '44%', height: '44%', marginLeft: '-22%', marginTop: '-22%' }}
+            style={{ width: '38%', height: '38%', marginLeft: '-19%', marginTop: '-19%' }}
             initial={{ opacity: 0, scale: 0.86 }}
             animate={{ opacity: 1, scale: hovered ? 1.04 : 1 }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
@@ -123,8 +125,8 @@ export function HeroNavigation({
                 labelMode="radial"
                 outwardOffset={58}
                 wrapperStyle={{
-                  left: `${50 + RING_RADIUS * cos}%`,
-                  top: `${50 + RING_RADIUS * sin}%`,
+                  left: `${50 + RING_RADIUS_COMPACT * cos}%`,
+                  top: `${50 + RING_RADIUS_COMPACT * sin}%`,
                 }}
                 direction={{ x: cos, y: sin }}
                 isActive={hovered?.id === node.id}
@@ -158,7 +160,7 @@ export function HeroNavigation({
           <defs>
             <path
               id="hero-ring-text"
-              d="M50 50 m-31 0 a31 31 0 1 1 62 0 a31 31 0 1 1 -62 0"
+              d="M50 50 m-34 0 a34 34 0 1 1 68 0 a34 34 0 1 1 -68 0"
               fill="none"
             />
           </defs>
@@ -216,7 +218,7 @@ export function HeroNavigation({
 
         <motion.div
           className="absolute left-1/2 top-1/2 z-10 flex items-center justify-center"
-          style={{ width: '50%', height: '50%', marginLeft: '-25%', marginTop: '-25%' }}
+          style={{ width: '44%', height: '44%', marginLeft: '-22%', marginTop: '-22%' }}
           initial={{ opacity: 0, scale: 0.86 }}
           animate={{
             opacity: 1,
