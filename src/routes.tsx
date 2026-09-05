@@ -8,6 +8,7 @@ import { Insights } from './sections/Insights';
 import { InsightsArticle } from './sections/InsightsArticle';
 import { Contact } from './sections/Contact';
 import { StartProject } from './sections/StartProject';
+import { NotFound } from './sections/NotFound';
 import { projects } from './data/projects';
 import { insights } from './data/insights';
 
@@ -26,6 +27,8 @@ export const appRoutes: AppRoute[] = [
   { path: '/insights/:slug', element: <InsightsArticle /> },
   { path: '/contact', element: <Contact /> },
   { path: '/start-a-project', element: <StartProject /> },
+  // anything else — the server answers 404 and this is what it renders
+  { path: '*', element: <NotFound /> },
 ];
 
 /** Concrete URLs the build turns into real HTML files. */
@@ -40,3 +43,9 @@ export const staticPaths: string[] = [
   ...projects.map((p) => `/work/${p.slug}`),
   ...insights.map((p) => `/insights/${p.slug}`),
 ];
+
+/**
+ * Rendered to dist/404.html for the server's ErrorDocument. Deliberately kept
+ * out of staticPaths so it never reaches the sitemap.
+ */
+export const errorPath = '/404';

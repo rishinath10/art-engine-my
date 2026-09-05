@@ -4,7 +4,8 @@ import { Check, Mail, MapPin, Phone } from 'lucide-react';
 import { PageShell } from '../components/PageShell';
 import { Reveal } from '../components/Reveal';
 import { MagneticButton } from '../components/MagneticButton';
-import { InstagramIcon, LinkedInIcon, YouTubeIcon } from '../components/SocialIcons';
+import { SocialLinks } from '../components/SocialLinks';
+import { activeSocials } from '../data/site';
 
 const details = [
   { icon: Mail, label: 'hello@artengine.my', href: 'mailto:hello@artengine.my' },
@@ -58,22 +59,14 @@ export function Contact() {
             })}
           </div>
 
-          <div className="mt-14 border-t border-navy/10 pt-8">
-            <p className="font-sans text-[10px] uppercase tracking-[0.26em] text-muted">
-              Elsewhere
-            </p>
-            <div className="mt-5 flex items-center gap-5 text-navy">
-              <a href="#" data-cursor="VISIT" aria-label="LinkedIn" className="hover:text-purple">
-                <LinkedInIcon />
-              </a>
-              <a href="#" data-cursor="VISIT" aria-label="Instagram" className="hover:text-purple">
-                <InstagramIcon />
-              </a>
-              <a href="#" data-cursor="VISIT" aria-label="YouTube" className="hover:text-purple">
-                <YouTubeIcon />
-              </a>
+          {activeSocials.length > 0 && (
+            <div className="mt-14 border-t border-navy/10 pt-8">
+              <p className="font-sans text-[10px] uppercase tracking-[0.26em] text-muted">
+                Elsewhere
+              </p>
+              <SocialLinks className="mt-5 gap-5 text-navy" />
             </div>
-          </div>
+          )}
         </Reveal>
 
         <Reveal delay={0.12}>

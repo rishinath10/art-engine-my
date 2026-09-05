@@ -24,7 +24,14 @@ function App() {
       <div className="cursor-enabled relative">
         <Preloader />
         <CustomCursor />
-        {!isHub && <SiteDock />}
+        {!isHub && (
+          <>
+            <a href="#main" className="skip-link">
+              Skip to content
+            </a>
+            <SiteDock />
+          </>
+        )}
         {/* wait: the outgoing page leaves before the next arrives, so two
             full-page backgrounds are never composited at once */}
         <AnimatePresence mode="wait" initial={false}>

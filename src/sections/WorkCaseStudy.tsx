@@ -27,7 +27,11 @@ export function WorkCaseStudy() {
       <div className="relative min-h-dvh overflow-hidden bg-offwhite">
         <AuroraBackground />
 
-        <div className="relative z-10 px-6 pb-28 pt-28 md:px-14 md:pt-32 lg:px-24 lg:pt-36">
+        <main
+          id="main"
+          tabIndex={-1}
+          className="relative z-10 px-6 pb-28 pt-28 outline-none md:px-14 md:pt-32 lg:px-24 lg:pt-36"
+        >
           <TransitionLink
             to="/work"
             data-cursor="BACK"
@@ -115,7 +119,7 @@ export function WorkCaseStudy() {
               />
             </TransitionLink>
           </div>
-        </div>
+        </main>
       </div>
     </PageTransition>
   );

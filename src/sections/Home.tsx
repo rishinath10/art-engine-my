@@ -1,14 +1,18 @@
 import { useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MapPin, Play } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { NavNode } from '../data/navigation';
-import { InstagramIcon, LinkedInIcon, YouTubeIcon } from '../components/SocialIcons';
+import { SocialLinks } from '../components/SocialLinks';
+import { activeSocials, STORY_VIDEO_URL } from '../data/site';
 import { PageTransition } from '../components/PageTransition';
 import { AuroraBackground } from '../components/AuroraBackground';
 import { ParallaxPanel } from '../components/ParallaxPanel';
 import { HeroNavigation } from '../components/HeroNavigation';
 import { useMediaQuery } from '../hooks/useMediaQuery';
 import { useScrollLock } from '../hooks/useScrollLock';
+import { useTransition } from '../context/TransitionContext';
+import { StoryModal } from '../components/StoryModal';
 
 const rise = {
   initial: { opacity: 0, y: 26 },
@@ -17,8 +21,22 @@ const rise = {
 
 export function Home() {
   const [active, setActive] = useState<NavNode | null>(null);
+  const [storyOpen, setStoryOpen] = useState(false);
   const handleHoverChange = useCallback((node: NavNode | null) => setActive(node), []);
   const isCompact = useMediaQuery('(max-width: 1023px)');
+  const navigate = useNavigate();
+  const { runTransition } = useTransition();
+
+  // The film opens in place once STORY_VIDEO_URL is set. Until then the button
+  // carries people to the page that actually tells the story rather than
+  // swallowing the click.
+  const playStory = () => {
+    if (STORY_VIDEO_URL) {
+      setStoryOpen(true);
+      return;
+    }
+    runTransition(window.innerWidth / 2, window.innerHeight / 2, () => navigate('/about'));
+  };
 
   // the hub fits the viewport exactly, so nothing below it is worth scrolling to
   useScrollLock(isCompact);
@@ -37,6 +55,8 @@ export function Home() {
 
       <button
         data-cursor="PLAY"
+        onClick={playStory}
+        aria-label={STORY_VIDEO_URL ? 'Watch our story' : 'Read our story'}
         className="group mt-7 flex items-center gap-4 font-sans text-[10px] font-normal uppercase tracking-[0.24em] text-navy [@media(max-height:760px)]:mt-4 lg:mt-11"
       >
         <span className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-purple to-royal text-white transition-transform duration-500 group-hover:scale-110">
@@ -175,19 +195,17 @@ export function Home() {
             </span>
             <span className="h-px w-8 bg-navy/15" />
           </div>
-          <div className="flex items-center gap-4 text-navy">
-            <a href="#" data-cursor="VISIT" aria-label="LinkedIn" className="hover:text-purple">
-              <LinkedInIcon />
-            </a>
-            <a href="#" data-cursor="VISIT" aria-label="Instagram" className="hover:text-purple">
-              <InstagramIcon />
-            </a>
-            <a href="#" data-cursor="VISIT" aria-label="YouTube" className="hover:text-purple">
-              <YouTubeIcon />
-            </a>
-          </div>
+          {/* The right slot balances the location marker. Social icons take it
+              once real profile URLs exist; until then the credit line holds it
+              so the counter stays centred. */}
+          {activeSocials.length > 0 ? (
+            <SocialLinks className="gap-4 text-navy" />
+          ) : (
+            <span className="text-muted/70">© {new Date().getFullYear()} Art Engine My</span>
+          )}
         </motion.div>
       </div>
+      {STORY_VIDEO_URL && <StoryModal open={storyOpen} onClose={() => setStoryOpen(false)} />}
     </PageTransition>
   );
 }

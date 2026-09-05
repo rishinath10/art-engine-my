@@ -34,7 +34,11 @@ export function InsightsArticle() {
           />
         )}
 
-        <div className="relative z-10 px-6 pb-28 pt-28 md:px-14 md:pt-32">
+        <main
+          id="main"
+          tabIndex={-1}
+          className="relative z-10 px-6 pb-28 pt-28 outline-none md:px-14 md:pt-32"
+        >
           <div className="mx-auto max-w-2xl">
             <TransitionLink
               to="/insights"
@@ -100,7 +104,7 @@ export function InsightsArticle() {
               />
             </TransitionLink>
           </div>
-        </div>
+        </main>
       </div>
     </PageTransition>
   );

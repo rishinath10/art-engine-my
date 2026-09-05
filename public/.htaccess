@@ -1,26 +1,36 @@
 # Apache/LiteSpeed config for the built site (Hostinger shared hosting).
 # Copied into dist/ at build time — upload it alongside index.html.
 
-# --- SPA routing -----------------------------------------------------------
-# React Router owns the URLs, so any path that is not a real file has to be
-# served index.html or the server returns 404 on a direct visit / refresh.
+# --- Canonical host --------------------------------------------------------
+# www and the apex both answered 200, which reads as two copies of the same
+# site. Everything lands on the apex, matching the canonical tags the build
+# writes into each page.
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
 
-  # real files and directories are served untouched
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+
+  # --- Routing -------------------------------------------------------------
+  # Every real page is prerendered to its own file, so real files and
+  # directories are served untouched...
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
 
-  RewriteRule ^ index.html [L]
+  # ...and anything else genuinely does not exist. Returning 404 rather than
+  # the homepage keeps mistyped and stale URLs out of the search index.
+  RewriteRule ^ - [L,R=404]
 </IfModule>
+
+ErrorDocument 404 /404.html
 
 # --- Compression -----------------------------------------------------------
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript
   AddOutputFilterByType DEFLATE application/javascript application/json
-  AddOutputFilterByType DEFLATE image/svg+xml
+  AddOutputFilterByType DEFLATE image/svg+xml application/xml text/xml
 </IfModule>
 
 # --- Caching ---------------------------------------------------------------
@@ -34,18 +44,33 @@
   ExpiresByType image/png "access plus 1 year"
   ExpiresByType image/svg+xml "access plus 1 year"
   ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType application/xml "access plus 1 day"
+  ExpiresByType text/plain "access plus 1 day"
 </IfModule>
 
 <IfModule mod_headers.c>
   <FilesMatch "\.(js|css|woff2|png|jpe?g|svg)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
+  # The share card sits at a stable URL that unfurlers re-fetch, so unlike the
+  # content-hashed assets above it must be allowed to change.
+  <Files "og-image.png">
+    Header set Cache-Control "public, max-age=604800"
+  </Files>
   <FilesMatch "\.html$">
     Header set Cache-Control "no-cache"
   </FilesMatch>
+  <FilesMatch "\.(xml|txt)$">
+    Header set Cache-Control "public, max-age=86400"
+  </FilesMatch>
+
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set X-Frame-Options "SAMEORIGIN"
 </IfModule>
 
 # --- MIME ------------------------------------------------------------------
 <IfModule mod_mime.c>
   AddType font/woff2 .woff2
+  AddType application/xml .xml
 </IfModule>

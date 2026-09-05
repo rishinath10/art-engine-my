@@ -93,7 +93,7 @@ export function StartProject() {
       <div className="relative flex min-h-dvh items-center overflow-hidden bg-offwhite px-6 py-28 md:px-14 lg:px-24">
         <AuroraBackground />
 
-        <div className="relative z-10 mx-auto w-full max-w-2xl">
+        <main id="main" tabIndex={-1} className="relative z-10 mx-auto w-full max-w-2xl outline-none">
           <AnimatePresence mode="wait">
             {done ? (
               <motion.div
@@ -274,7 +274,7 @@ export function StartProject() {
               </motion.div>
             )}
           </AnimatePresence>
-        </div>
+        </main>
       </div>
     </PageTransition>
   );

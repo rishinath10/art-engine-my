@@ -10,7 +10,8 @@
   --color-white: #ffffff;
   --color-offwhite: #f8f8fa;
   --color-grey: #e7e8ee;
-  --color-muted: #687087;
+  /* 5.8:1 on the off-white ground, so it still clears AA at 80% opacity */
+  --color-muted: #5a6178;
 
   --font-display: 'Cormorant Garamond', 'EB Garamond', Garamond, Georgia, serif;
   --font-serif: 'EB Garamond', Garamond, Georgia, serif;
@@ -79,6 +80,31 @@
     cursor: pointer;
     padding: 0;
   }
+
+  /* Keyboard focus needs to be visible everywhere. focus-visible keeps the
+     ring off mouse clicks, so it costs the pointer experience nothing. The
+     custom cursor hides the native one, which makes this the only positional
+     feedback a keyboard user gets. */
+  :focus-visible {
+    outline: 2px solid var(--color-purple);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Circular controls get a ring that follows their shape. */
+  .rounded-full:focus-visible {
+    outline-offset: 4px;
+    border-radius: 9999px;
+  }
+
+  /* Text fields already colour their underline on focus; the ring would sit
+     awkwardly around a borderless input, so they keep the underline instead. */
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: none;
+    box-shadow: 0 1px 0 0 var(--color-purple);
+  }
 }
 
 /* custom cursor: hide native cursor on fine-pointer devices only */
@@ -101,6 +127,31 @@
   }
   .safe-t {
     margin-top: env(safe-area-inset-top, 0px);
+  }
+}
+
+/* Jumps a keyboard user past the decorative hub straight into the page. It is
+   invisible until focused. */
+@layer components {
+  .skip-link {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    z-index: 100;
+    translate: -50% -140%;
+    border-radius: 0 0 12px 12px;
+    background: var(--color-navy);
+    color: var(--color-white);
+    padding: 0.75rem 1.5rem;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    transition: translate 0.3s ease;
+  }
+  .skip-link:focus-visible {
+    translate: -50% 0;
+    outline-offset: -4px;
   }
 }
 

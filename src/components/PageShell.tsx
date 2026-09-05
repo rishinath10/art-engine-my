@@ -24,7 +24,11 @@ export function PageShell({ eyebrow, title, intro, children, nextId }: PageShell
       <div className="relative min-h-dvh overflow-hidden bg-offwhite">
         <AuroraBackground />
 
-        <div className="relative z-10 px-6 pb-28 pt-28 md:px-14 md:pt-32 lg:px-24 lg:pt-36">
+        <main
+          id="main"
+          tabIndex={-1}
+          className="relative z-10 px-6 pb-28 pt-28 outline-none md:px-14 md:pt-32 lg:px-24 lg:pt-36"
+        >
           <header className="max-w-4xl">
             <motion.p
               initial={{ opacity: 0, y: 14 }}
@@ -85,7 +89,7 @@ export function PageShell({ eyebrow, title, intro, children, nextId }: PageShell
               <p className="mt-2 font-serif text-sm italic text-muted">{next.previewText}</p>
             </motion.div>
           )}
-        </div>
+        </main>
       </div>
     </PageTransition>
   );

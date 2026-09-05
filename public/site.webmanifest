@@ -1,0 +1,13 @@
+{
+  "name": "Art Engine My Solutions",
+  "short_name": "Art Engine",
+  "description": "A creative technology and digitalization partner in Kuala Lumpur.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8F8FA",
+  "theme_color": "#F8F8FA",
+  "icons": [
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

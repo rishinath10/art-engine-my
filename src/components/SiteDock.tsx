@@ -36,7 +36,7 @@ export function SiteDock() {
               className="group flex items-center gap-3"
             >
               <span
-                className={`text-[11px] uppercase tracking-[0.15em] opacity-0 transition-opacity duration-300 group-hover:opacity-100 ${
+                className={`text-[11px] uppercase tracking-[0.15em] opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 ${
                   active ? 'text-purple' : 'text-navy'
                 }`}
               >
@@ -44,7 +44,7 @@ export function SiteDock() {
               </span>
               <motion.span
                 className={`block h-2 w-2 rounded-full transition-colors duration-300 ${
-                  active ? 'bg-purple' : 'bg-navy/25 group-hover:bg-purple'
+                  active ? 'bg-purple' : 'bg-navy/25 group-hover:bg-purple group-focus-visible:bg-purple'
                 }`}
                 whileHover={{ scale: 1.6 }}
               />

@@ -40,6 +40,10 @@ const staticMeta: Record<string, PageMeta> = {
     description:
       'Have a project in mind? Talk to Art Engine My Solutions in Kuala Lumpur about what you want to build.',
   },
+  '/404': {
+    title: `Page Not Found — ${SITE}`,
+    description: 'That address does not lead anywhere on this site.',
+  },
   '/start-a-project': {
     title: `Start a Project — ${SITE}`,
     description:

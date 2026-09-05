@@ -3,8 +3,9 @@ import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import App from './App';
 
-export { staticPaths } from './routes';
+export { staticPaths, errorPath } from './routes';
 export { metaForPath } from './data/meta';
+export { SITE_URL, SITE_NAME, OG_IMAGE, LOGO_URL } from './data/site';
 
 /**
  * Renders a route to HTML at build time. Effects don't run here, so anything
