@@ -10,7 +10,9 @@ interface NavigationNodeProps {
   isActive: boolean;
   isDimmed: boolean;
   compact?: boolean;
-  labelMode?: 'auto' | 'above';
+  labelMode?: 'auto' | 'above' | 'radial';
+  /** distance from node centre to label centre, for radial placement */
+  outwardOffset?: number;
   onHover: (node: NavNode | null) => void;
   onSelect: (node: NavNode, origin: { x: number; y: number }) => void;
 }
@@ -24,6 +26,7 @@ export function NavigationNode({
   isDimmed,
   compact = false,
   labelMode = 'auto',
+  outwardOffset = 48,
   onHover,
   onSelect,
 }: NavigationNodeProps) {
@@ -33,6 +36,7 @@ export function NavigationNode({
   const size = compact ? 54 : 64;
   const gap = size / 2 + (compact ? 13 : 18);
   const horizontal = labelMode === 'auto' && Math.abs(direction.x) > 0.5;
+  const radial = labelMode === 'radial';
 
   const handleSelect = () => {
     const rect = ref.current?.getBoundingClientRect();
@@ -67,7 +71,7 @@ export function NavigationNode({
         className={`z-20 flex items-center justify-center rounded-full border transition-colors duration-500 ${
           isActive
             ? 'border-royal/60 bg-gradient-to-br from-purple to-royal'
-            : 'border-navy/10 bg-white/90 backdrop-blur-sm'
+            : 'border-white/70 bg-white/55 backdrop-blur-md'
         }`}
         style={{
           width: size,
@@ -83,7 +87,7 @@ export function NavigationNode({
           y: isActive ? direction.y * 6 : 0,
           boxShadow: isActive
             ? '0 20px 45px -14px rgba(38, 63, 159, 0.45), 0 0 0 8px rgba(184, 162, 242, 0.16)'
-            : '0 12px 32px -20px rgba(17, 25, 54, 0.45)',
+            : '0 12px 32px -18px rgba(17, 25, 54, 0.4), inset 0 1px 0 0 rgba(255,255,255,0.85)',
         }}
         whileTap={{ scale: 0.92 }}
         onTouchStart={() => onHover(node)}
@@ -101,30 +105,39 @@ export function NavigationNode({
       </motion.button>
 
       <motion.div
-        className={`pointer-events-none absolute z-10 ${compact ? 'w-[58px]' : 'w-[132px]'}`}
-        style={{
-          textAlign: horizontal ? (direction.x > 0 ? 'left' : 'right') : 'center',
-          left: horizontal ? (direction.x > 0 ? gap : undefined) : 0,
-          right: horizontal ? (direction.x < 0 ? gap : undefined) : undefined,
-          top: horizontal ? 0 : direction.y > 0 ? gap : undefined,
-          bottom: !horizontal && direction.y < 0 ? gap : undefined,
-          transform: horizontal
-            ? 'translateY(-50%)'
-            : `translateX(${compact ? '-29px' : '-66px'})`,
-        }}
+        className={`pointer-events-none absolute z-10 ${compact ? 'w-[62px]' : 'w-[132px]'}`}
+        style={
+          radial
+            ? {
+                textAlign: 'center',
+                left: direction.x * outwardOffset,
+                top: direction.y * outwardOffset,
+                transform: 'translate(-50%, -50%)',
+              }
+            : {
+                textAlign: horizontal ? (direction.x > 0 ? 'left' : 'right') : 'center',
+                left: horizontal ? (direction.x > 0 ? gap : undefined) : 0,
+                right: horizontal ? (direction.x < 0 ? gap : undefined) : undefined,
+                top: horizontal ? 0 : direction.y > 0 ? gap : undefined,
+                bottom: !horizontal && direction.y < 0 ? gap : undefined,
+                transform: horizontal
+                  ? 'translateY(-50%)'
+                  : `translateX(${compact ? '-29px' : '-66px'})`,
+              }
+        }
         animate={{ opacity: isDimmed ? 0.35 : 1 }}
         transition={{ duration: 0.4 }}
       >
         <div
           className={`font-sans tracking-[0.3em] text-royal/45 ${
-            compact ? 'text-[8px]' : 'text-[9px]'
+            compact ? 'text-[7.5px]' : 'text-[9px]'
           }`}
         >
           {node.index}
         </div>
         <div
           className={`mt-1 font-sans font-medium uppercase leading-tight transition-colors duration-500 ${
-            compact ? 'text-[10.5px] tracking-[0.1em]' : 'text-[11px] tracking-[0.18em]'
+            compact ? 'text-[9.5px] tracking-[0.06em]' : 'text-[11px] tracking-[0.18em]'
           } ${isActive ? 'text-purple' : 'text-navy'}`}
         >
           {compact ? node.shortLabel : node.label}

@@ -11,13 +11,6 @@ import { usePointer } from '../hooks/usePointer';
 
 const RING_RADIUS = 38;
 
-/** Arc sweep for the mobile layout: left to right across the top of a circle
- *  whose centre sits below the screen, keeping every node in the thumb zone. */
-const ARC_START = 160;
-const ARC_END = 20;
-const ARC_RX = 41;
-const ARC_RY = 80;
-
 function HoverPreview({ hovered }: { hovered: NavNode | null }) {
   return (
     <AnimatePresence mode="wait">
@@ -80,52 +73,60 @@ export function HeroNavigation({
   if (isCompact) {
     return (
       <div className="flex w-full flex-col items-center">
-        <div className="flex min-h-[68px] w-full max-w-sm items-start justify-center px-6 text-center">
-          <HoverPreview hovered={hovered} />
-        </div>
-
-        <div className="relative -mx-6 mt-4 h-[188px] w-screen max-w-[520px] sm:h-[240px] sm:max-w-[660px]">
+        {/* padding reserves room for the labels, which sit outside the ring box */}
+        <div className="flex w-full justify-center py-11">
+        <div className="relative aspect-square w-full max-w-[min(64vw,264px,34vh)]">
           <svg
             viewBox="0 0 100 100"
-            preserveAspectRatio="none"
-            className="absolute inset-0 h-full w-full overflow-visible"
+            className="absolute inset-0 h-full w-full"
             aria-hidden="true"
             fill="none"
           >
-            <motion.ellipse
+            <motion.circle
               cx="50"
-              cy="100"
-              rx={ARC_RX}
-              ry={ARC_RY}
+              cy="50"
+              r={RING_RADIUS}
               stroke={hovered ? '#6E35C5' : '#111936'}
-              strokeOpacity={hovered ? 0.35 : 0.2}
-              strokeWidth="1"
-              strokeDasharray="3 6"
-              vectorEffect="non-scaling-stroke"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-              style={{ transition: 'stroke 0.7s ease, stroke-opacity 0.7s ease' }}
+              strokeOpacity={hovered ? 0.34 : 0.16}
+              strokeWidth="0.3"
+              strokeDasharray="0.9 2.2"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              style={{
+                transformOrigin: '50% 50%',
+                transition: 'stroke 0.8s ease, stroke-opacity 0.8s ease',
+              }}
+              transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
             />
           </svg>
 
+          <motion.div
+            className="absolute left-1/2 top-1/2 z-10 flex items-center justify-center"
+            style={{ width: '44%', height: '44%', marginLeft: '-22%', marginTop: '-22%' }}
+            initial={{ opacity: 0, scale: 0.86 }}
+            animate={{ opacity: 1, scale: hovered ? 1.04 : 1 }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <Logo className="w-full" />
+          </motion.div>
+
           {navNodes.map((node, i) => {
-            const angle =
-              ((ARC_START - (i * (ARC_START - ARC_END)) / (navNodes.length - 1)) * Math.PI) / 180;
-            const cos = Math.cos(angle);
-            const sin = Math.sin(angle);
+            const rad = (node.angle * Math.PI) / 180;
+            const cos = Math.cos(rad);
+            const sin = Math.sin(rad);
             return (
               <NavigationNode
                 key={node.id}
                 node={node}
                 index={i}
                 compact
-                labelMode="above"
+                labelMode="radial"
+                outwardOffset={58}
                 wrapperStyle={{
-                  left: `${50 + ARC_RX * cos}%`,
-                  bottom: `${sin * ARC_RY}%`,
+                  left: `${50 + RING_RADIUS * cos}%`,
+                  top: `${50 + RING_RADIUS * sin}%`,
                 }}
-                direction={{ x: cos, y: -1 }}
+                direction={{ x: cos, y: sin }}
                 isActive={hovered?.id === node.id}
                 isDimmed={!!hovered && hovered.id !== node.id}
                 onHover={setHovered}
@@ -133,6 +134,11 @@ export function HeroNavigation({
               />
             );
           })}
+        </div>
+        </div>
+
+        <div className="mt-3 flex min-h-[56px] w-full max-w-sm items-start justify-center px-6 text-center">
+          <HoverPreview hovered={hovered} />
         </div>
       </div>
     );
@@ -209,15 +215,8 @@ export function HeroNavigation({
         </motion.svg>
 
         <motion.div
-          className="absolute left-1/2 top-1/2 z-10 flex items-center justify-center rounded-full bg-white/95 backdrop-blur-sm"
-          style={{
-            width: '48%',
-            height: '48%',
-            marginLeft: '-24%',
-            marginTop: '-24%',
-            boxShadow:
-              '0 40px 90px -50px rgba(17,25,54,0.5), inset 0 1px 0 0 rgba(255,255,255,0.9), inset 0 0 0 1px rgba(231,232,238,0.85), inset 0 -14px 30px -22px rgba(110,53,197,0.35)',
-          }}
+          className="absolute left-1/2 top-1/2 z-10 flex items-center justify-center"
+          style={{ width: '50%', height: '50%', marginLeft: '-25%', marginTop: '-25%' }}
           initial={{ opacity: 0, scale: 0.86 }}
           animate={{
             opacity: 1,
@@ -231,7 +230,7 @@ export function HeroNavigation({
             y: { type: 'spring', damping: 28, stiffness: 55, mass: 0.9 },
           }}
         >
-          <Logo className="w-[70%]" />
+          <Logo className="w-full" />
         </motion.div>
 
         {navNodes.map((node, i) => {

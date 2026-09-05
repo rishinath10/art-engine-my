@@ -7,7 +7,6 @@ import { PageTransition } from '../components/PageTransition';
 import { AuroraBackground } from '../components/AuroraBackground';
 import { ParallaxPanel } from '../components/ParallaxPanel';
 import { HeroNavigation } from '../components/HeroNavigation';
-import { Logo } from '../components/Logo';
 
 const rise = {
   initial: { opacity: 0, y: 26 },
@@ -42,8 +41,11 @@ export function Home() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.1, delay: 1.1, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute bottom-24 right-10 flex max-w-[250px] items-center gap-3 rounded-2xl border border-white/60 bg-white/85 p-3 backdrop-blur-md"
-            style={{ boxShadow: '0 24px 60px -34px rgba(17,25,54,0.55)' }}
+            className="absolute bottom-24 right-10 flex max-w-[250px] items-center gap-3 rounded-2xl border border-white/70 bg-white/45 p-3.5 backdrop-blur-2xl"
+            style={{
+              boxShadow:
+                '0 24px 60px -34px rgba(17,25,54,0.5), inset 0 1px 0 0 rgba(255,255,255,0.8)',
+            }}
           >
             <span className="h-11 w-11 shrink-0 rounded-xl bg-gradient-to-br from-purple-light to-royal" />
             <p className="font-serif text-[12px] leading-snug text-navy">
@@ -63,21 +65,18 @@ export function Home() {
 
         <div className="relative z-10 flex h-full flex-col px-6 lg:grid lg:grid-cols-[0.95fr_1.15fr_0.62fr] lg:items-center lg:gap-8 lg:px-12 xl:px-16">
           <div className="flex min-h-0 flex-1 flex-col items-center justify-center pt-8 text-center lg:flex-none lg:items-start lg:pt-0 lg:text-left">
-            <motion.div
+            <motion.p
               {...rise}
               transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-              className="lg:hidden"
+              className="font-sans text-[9px] font-light uppercase tracking-[0.32em] text-muted lg:hidden"
             >
-              <p className="font-sans text-[9px] font-light uppercase tracking-[0.32em] text-muted">
-                Creativity · Technology · Digitalization
-              </p>
-              <Logo className="mx-auto mt-6 w-[142px]" />
-            </motion.div>
+              Creativity · Technology · Digitalization
+            </motion.p>
 
             <motion.h1
               {...rise}
               transition={{ duration: 1.1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-10 font-display text-[clamp(2.4rem,8.2vw,3.05rem)] font-light leading-[1.04] tracking-[-0.02em] text-navy sm:text-[clamp(3rem,6vw,4rem)] lg:mt-0 lg:text-[clamp(3rem,4.4vw,4.5rem)]"
+              className="mt-7 font-display text-[clamp(2.4rem,8.2vw,3.05rem)] font-light leading-[1.04] tracking-[-0.02em] text-navy sm:text-[clamp(3rem,6vw,4rem)] lg:mt-0 lg:text-[clamp(3rem,4.4vw,4.5rem)]"
             >
               Different
               <span className="lg:hidden"> </span>
@@ -98,14 +97,14 @@ export function Home() {
               className="flex flex-col items-center lg:items-start"
             >
               <span className="mt-6 block h-px w-12 bg-navy/20 lg:mt-9" />
-              <p className="mt-4 max-w-[19rem] font-sans text-[13px] font-light leading-[1.75] tracking-wide text-muted lg:mt-6">
+              <p className="mt-4 max-w-[19rem] font-sans text-[13px] font-light leading-[1.75] tracking-wide text-muted [@media(max-height:700px)]:hidden lg:mt-6 lg:block">
                 We blend creativity, technology and strategy to build digital experiences that
                 drive real impact.
               </p>
 
               <button
                 data-cursor="PLAY"
-                className="group mt-6 flex items-center gap-4 font-sans text-[10px] font-normal uppercase tracking-[0.24em] text-navy lg:mt-11"
+                className="group mt-6 flex items-center gap-4 font-sans text-[10px] font-normal uppercase tracking-[0.24em] text-navy [@media(max-height:700px)]:hidden lg:mt-11 lg:flex"
               >
                 <span className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-purple to-royal text-white transition-transform duration-500 group-hover:scale-110">
                   <Play size={12} fill="currentColor" />
@@ -115,7 +114,8 @@ export function Home() {
             </motion.div>
           </div>
 
-          <div className="safe-b flex shrink-0 items-end justify-center pb-20 lg:flex-1 lg:items-center lg:pb-0">
+          <div className="safe-b flex shrink-0 flex-col items-center justify-end pb-16 [@media(max-height:700px)]:pb-8 lg:flex-1 lg:justify-center lg:pb-0">
+            <span className="mb-3 block h-px w-16 bg-navy/12 lg:hidden" />
             <HeroNavigation onHoverChange={handleHoverChange} />
           </div>
 
