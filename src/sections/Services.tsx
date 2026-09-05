@@ -5,6 +5,7 @@ import { ArrowUpRight } from 'lucide-react';
 import { PageShell } from '../components/PageShell';
 import { Reveal } from '../components/Reveal';
 import { services } from '../data/services';
+import { ToolMark } from '../components/ToolMark';
 import { TransitionLink } from '../components/TransitionLink';
 
 export function Services() {
@@ -62,15 +63,32 @@ export function Services() {
                     </p>
                     <AnimatePresence initial={false}>
                       {isActive && (
-                        <motion.p
+                        <motion.div
                           initial={{ opacity: 0, height: 0 }}
                           animate={{ opacity: 1, height: 'auto' }}
                           exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                          className="overflow-hidden font-sans text-[14px] font-light leading-[1.85] text-muted"
+                          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                          className="overflow-hidden"
                         >
-                          <span className="mt-3 block">{service.description}</span>
-                        </motion.p>
+                          <p className="mt-3 font-sans text-[14px] font-light leading-[1.85] text-muted">
+                            {service.description}
+                          </p>
+
+                          <p className="mt-5 font-sans text-[9px] uppercase tracking-[0.26em] text-royal/70">
+                            Specialisms
+                          </p>
+                          <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
+                            {service.specialisms.map((item) => (
+                              <li
+                                key={item}
+                                className="flex items-center gap-2 font-sans text-[12.5px] font-light text-navy/75"
+                              >
+                                <span className="h-1 w-1 rounded-full bg-purple/60" />
+                                {item}
+                              </li>
+                            ))}
+                          </ul>
+                        </motion.div>
                       )}
                     </AnimatePresence>
                   </div>
@@ -83,6 +101,12 @@ export function Services() {
                         : 'text-navy/40'
                     }`}
                   />
+                </div>
+
+                <div className="relative mt-6 flex flex-wrap items-center gap-x-7 gap-y-4 md:ml-[calc(2.5rem+2.5rem)]">
+                  {service.tools.map((tool, ti) => (
+                    <ToolMark key={tool} id={tool} index={ti} />
+                  ))}
                 </div>
               </div>
             </Reveal>
