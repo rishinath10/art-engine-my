@@ -39,7 +39,7 @@ export function Work() {
                 <motion.div
                   animate={{ y: isHovered ? -10 : 0 }}
                   transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                  className="overflow-hidden rounded-[2.5rem] border border-white/70 bg-white/40 backdrop-blur-xl"
+                  className="glass overflow-hidden rounded-[2.5rem]"
                   style={{ boxShadow: '0 30px 70px -50px rgba(17,25,54,0.5)' }}
                 >
                   <div className="relative h-[300px] overflow-hidden md:h-[380px]">

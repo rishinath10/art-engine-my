@@ -92,7 +92,7 @@ export function Home() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.1, delay: 1.1, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute bottom-24 right-10 flex max-w-[250px] items-center gap-3 rounded-2xl border border-white/70 bg-white/45 p-3.5 backdrop-blur-2xl"
+            className="glass absolute bottom-24 right-10 flex max-w-[250px] items-center gap-3 rounded-2xl p-3.5"
             style={{
               boxShadow:
                 '0 24px 60px -34px rgba(17,25,54,0.5), inset 0 1px 0 0 rgba(255,255,255,0.8)',

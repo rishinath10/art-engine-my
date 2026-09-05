@@ -40,7 +40,7 @@ export function Contact() {
             {details.map(({ icon: Icon, label, href }) => {
               const content = (
                 <span className="flex items-center gap-4">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-full border border-white/70 bg-white/50 text-royal backdrop-blur-xl transition-colors duration-500 group-hover:text-purple">
+                  <span className="glass-chip flex h-11 w-11 items-center justify-center rounded-full text-royal transition-colors duration-500 group-hover:text-purple">
                     <Icon size={16} strokeWidth={1.6} />
                   </span>
                   <span className="font-sans text-[15px] font-light text-navy transition-colors duration-500 group-hover:text-purple">
@@ -71,7 +71,7 @@ export function Contact() {
         </Reveal>
 
         <Reveal delay={0.12}>
-          <div className="rounded-[2.5rem] border border-white/70 bg-white/40 p-9 backdrop-blur-2xl md:p-12">
+          <div className="glass rounded-[2.5rem] p-9 md:p-12">
             <AnimatePresence mode="wait">
               {!open && !sent && (
                 <motion.div
@@ -154,7 +154,7 @@ export function Contact() {
                   transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                   className="py-6 text-center"
                 >
-                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-white/70 bg-white/60 backdrop-blur-xl">
+                  <div className="glass-chip mx-auto flex h-16 w-16 items-center justify-center rounded-full">
                     <Check className="text-purple" />
                   </div>
                   <h2 className="mt-8 font-display text-[clamp(1.6rem,3vw,2.2rem)] font-light text-navy">

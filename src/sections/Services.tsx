@@ -24,7 +24,9 @@ export function Services() {
       intro="Six practices that work as one. Most engagements start in a single lane and grow across several as the picture gets clearer."
       nextId="work"
     >
-      <div className="border-t border-navy/10">
+      {/* Six rows, one pane — the hairlines between them come from
+          .glass-divide rather than a border on each row. */}
+      <div className="glass glass-divide overflow-hidden rounded-3xl px-6 md:px-9">
         {services.map((service, i) => {
           const isActive = active === service.slug;
           return (
@@ -33,10 +35,10 @@ export function Services() {
                 onMouseEnter={() => setActive(service.slug)}
                 onMouseLeave={() => setActive(null)}
                 data-cursor="VIEW"
-                className="group relative cursor-pointer border-b border-navy/10 py-9 md:py-11"
+                className="group relative cursor-pointer py-9 md:py-11"
               >
                 <motion.span
-                  className="pointer-events-none absolute inset-x-0 top-0 h-full bg-gradient-to-r from-lavender/50 via-lavender/20 to-transparent"
+                  className="pointer-events-none absolute -inset-x-6 top-0 h-full bg-gradient-to-r from-lavender/50 via-lavender/20 to-transparent md:-inset-x-9"
                   initial={false}
                   animate={{ opacity: isActive ? 1 : 0 }}
                   transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
@@ -115,7 +117,7 @@ export function Services() {
       </div>
 
       <Reveal className="mt-20">
-        <div className="flex flex-col items-start gap-6 rounded-3xl border border-white/70 bg-white/45 p-10 backdrop-blur-2xl md:flex-row md:items-center md:justify-between">
+        <div className="glass flex flex-col items-start gap-6 rounded-3xl p-10 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="font-display text-[clamp(1.5rem,3vw,2.2rem)] font-light text-navy">
               Not sure which you need?

@@ -76,12 +76,12 @@ export function Insights() {
               data-cursor="READ"
               onMouseEnter={() => setHovered(post.slug)}
               onMouseLeave={() => setHovered(null)}
-              className="group block border-t border-navy/10 pt-8"
+              className="glass group block overflow-hidden rounded-3xl p-6 transition-shadow duration-500 md:p-7"
             >
               <motion.div
                 animate={{ y: hovered === post.slug ? -6 : 0 }}
                 transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                className="aspect-[16/10] overflow-hidden rounded-3xl border border-white/70"
+                className="aspect-[16/10] overflow-hidden rounded-2xl"
               >
                 <motion.div
                   className="h-full w-full"

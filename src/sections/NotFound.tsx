@@ -53,14 +53,14 @@ export function NotFound() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.38, ease: [0.22, 1, 0.36, 1] }}
             aria-label="Site sections"
-            className="mt-14 grid w-full grid-cols-2 gap-px overflow-hidden rounded-2xl border border-navy/10 bg-navy/10 sm:grid-cols-3"
+            className="glass mt-14 grid w-full grid-cols-2 gap-px overflow-hidden rounded-2xl bg-navy/[0.07] sm:grid-cols-3"
           >
             {navNodes.map((node) => (
               <TransitionLink
                 key={node.id}
                 to={node.path}
                 data-cursor="OPEN"
-                className="group flex flex-col items-center gap-2 bg-offwhite/80 px-4 py-6 backdrop-blur-xl transition-colors duration-500 hover:bg-white"
+                className="group flex flex-col items-center gap-2 bg-white/45 px-4 py-6 transition-colors duration-500 hover:bg-white/80"
               >
                 <span className="font-sans text-[9px] tracking-[0.3em] text-royal/45">
                   {node.index}

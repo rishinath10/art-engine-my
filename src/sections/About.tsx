@@ -49,10 +49,12 @@ export function About() {
             change how they operate — not to chase trends, but to build something that holds up.
           </p>
 
-          <div className="mt-14 space-y-10">
+          {/* One pane rather than four: a single backdrop-filter, and the
+              principles read as one set instead of four loose cards. */}
+          <div className="glass glass-divide mt-14 rounded-3xl px-8 py-2 md:px-10">
             {principles.map((p, i) => (
               <Reveal key={p.index} delay={i * 0.08}>
-                <div className="flex gap-6 border-t border-navy/10 pt-6">
+                <div className="flex gap-6 py-8">
                   <span className="font-sans text-[10px] tracking-[0.3em] text-royal/50">
                     {p.index}
                   </span>
@@ -73,9 +75,11 @@ export function About() {
         </Reveal>
       </div>
 
-      <div className="mt-28 grid grid-cols-2 gap-10 border-t border-navy/10 pt-14 md:grid-cols-4">
+      {/* The hairline grid does the dividing, so the panel needs no internal
+          borders — the gap colour shows through as the rule. */}
+      <div className="glass mt-28 grid grid-cols-2 gap-px overflow-hidden rounded-3xl bg-navy/[0.07] md:grid-cols-4">
         {stats.map((stat, i) => (
-          <Reveal key={stat.label} delay={i * 0.08}>
+          <Reveal key={stat.label} delay={i * 0.08} className="bg-white/40 px-7 py-10 md:px-8">
             <div className="font-display text-[clamp(2.2rem,4vw,3.2rem)] font-light text-navy">
               {stat.value}
             </div>

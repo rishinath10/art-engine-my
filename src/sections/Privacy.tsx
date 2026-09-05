@@ -52,10 +52,10 @@ export function Privacy() {
 
       {/* A single measure throughout — this is a document to be read start to
           finish, not a grid to be scanned. */}
-      <div className="mt-14 max-w-2xl">
+      <div className="glass glass-divide mt-14 max-w-2xl rounded-3xl px-7 py-2 md:px-10">
         {privacySections.map((section, i) => (
           <Reveal key={section.heading} delay={Math.min(i, 4) * 0.05}>
-            <section className="border-t border-navy/10 py-10 first:border-t-0 first:pt-0">
+            <section className="py-10">
               <h2 className="font-display text-[clamp(1.5rem,3vw,2rem)] font-light leading-tight text-navy">
                 {section.heading}
               </h2>

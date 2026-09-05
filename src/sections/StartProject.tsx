@@ -55,10 +55,10 @@ function Choice({
       type="button"
       data-cursor="SELECT"
       onClick={onClick}
-      className={`rounded-2xl border px-6 py-4 text-left font-sans text-[14px] font-light transition-all duration-500 ${
+      className={`glass-chip rounded-2xl px-6 py-4 text-left font-sans text-[14px] font-light transition-all duration-500 ${
         selected
-          ? 'border-purple/50 bg-gradient-to-br from-lavender/80 to-white/40 text-navy'
-          : 'border-navy/10 bg-white/40 text-muted backdrop-blur-xl hover:border-purple-light hover:text-navy'
+          ? 'border-purple/50 bg-gradient-to-br from-lavender/85 to-white/50 text-navy'
+          : 'text-muted hover:border-purple-light hover:text-navy'
       }`}
     >
       {label}

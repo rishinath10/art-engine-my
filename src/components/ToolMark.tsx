@@ -19,7 +19,7 @@ export function ToolMark({ id, index = 0 }: { id: ToolId; index?: number }) {
       className="group/tool flex items-center gap-2.5"
       title={tool.name}
     >
-      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/70 bg-white/60 backdrop-blur-md transition-colors duration-500 group-hover/tool:border-purple/30">
+      <span className="glass-chip flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition-colors duration-500 group-hover/tool:border-purple/30">
         {tool.path ? (
           <svg
             viewBox="0 0 24 24"
