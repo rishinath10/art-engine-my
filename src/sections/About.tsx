@@ -1,12 +1,15 @@
 import { PageShell } from '../components/PageShell';
 import { ParallaxPanel } from '../components/ParallaxPanel';
 import { Reveal } from '../components/Reveal';
+import { company } from '../data/site';
 
+// The founding year rather than a count of years, so the figure never needs
+// updating and never quietly goes stale.
 const stats = [
-  { value: '100+', label: 'Projects Delivered' },
-  { value: '50+', label: 'Happy Clients' },
-  { value: '5+', label: 'Years of Experience' },
-  { value: '∞', label: 'Bigger Possibilities' },
+  { value: String(company.founded), label: 'Working Since' },
+  { value: company.projects, label: 'Projects Delivered' },
+  { value: company.clients, label: 'Clients Served' },
+  { value: String(company.countries.length), label: 'Countries' },
 ];
 
 const principles = [
@@ -80,7 +83,7 @@ export function About() {
       <div className="glass mt-28 grid grid-cols-2 gap-px overflow-hidden rounded-3xl bg-navy/[0.07] md:grid-cols-4">
         {stats.map((stat, i) => (
           <Reveal key={stat.label} delay={i * 0.08} className="bg-white/40 px-7 py-10 md:px-8">
-            <div className="font-display text-[clamp(2.2rem,4vw,3.2rem)] font-light text-navy">
+            <div className="font-display text-[clamp(2.2rem,4vw,3.2rem)] font-light tabular-nums text-navy">
               {stat.value}
             </div>
             <div className="mt-2 font-sans text-[10px] uppercase tracking-[0.22em] text-muted">
@@ -88,6 +91,30 @@ export function About() {
             </div>
           </Reveal>
         ))}
+
+        {/* The count above is the headline; naming them is what makes it
+            credible, so they get a full-width row rather than a tooltip. */}
+        <Reveal
+          delay={0.32}
+          className="col-span-2 bg-white/40 px-7 py-8 md:col-span-4 md:px-8"
+        >
+          <p className="font-sans text-[10px] uppercase tracking-[0.22em] text-muted">
+            Where we have worked
+          </p>
+          {/* Chips rather than dot-separated text: the list wraps to two lines
+              on a phone, and a separator dot stranded at the start of a line
+              reads as a mistake. */}
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {company.countries.map((country) => (
+              <li
+                key={country}
+                className="rounded-full border border-white/75 bg-white/55 px-3.5 py-1.5 font-sans text-[13px] font-light text-navy"
+              >
+                {country}
+              </li>
+            ))}
+          </ul>
+        </Reveal>
       </div>
     </PageShell>
   );

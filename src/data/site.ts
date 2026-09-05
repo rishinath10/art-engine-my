@@ -36,6 +36,17 @@ export const socials: SocialLink[] = [
 export const activeSocials = socials.filter((s) => s.url !== '');
 
 /**
+ * The studio's own facts, supplied by the client. Read by the About page and
+ * by the structured data the build emits, so the two cannot disagree.
+ */
+export const company = {
+  founded: 2018,
+  clients: '100+',
+  projects: '1000+',
+  countries: ['Malaysia', 'Singapore', 'Qatar', 'Indonesia', 'India', 'Sri Lanka'],
+};
+
+/**
  * Details the privacy notice quotes. Confirm these before the notice is
  * treated as final — an empty registration number simply omits that line.
  */

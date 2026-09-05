@@ -1,7 +1,7 @@
 import { projects } from './projects';
 import { insights } from './insights';
 import { metaForPath } from './meta';
-import { SITE_URL, SITE_NAME, OG_IMAGE, LOGO_URL } from './site';
+import { SITE_URL, SITE_NAME, OG_IMAGE, LOGO_URL, company } from './site';
 
 /**
  * Structured data for the prerenderer. Imported only by the SSR entry, so none
@@ -41,11 +41,13 @@ const organisation = {
   description: metaForPath('/').description,
   email: 'hello@artengine.my',
   telephone: '+60173921219',
+  foundingDate: String(company.founded),
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'Kuala Lumpur',
     addressCountry: 'MY',
   },
+  areaServed: company.countries.map((name) => ({ '@type': 'Country', name })),
 };
 
 /** Section a nested page hangs off, for the breadcrumb trail. */
