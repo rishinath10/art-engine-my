@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Check } from 'lucide-react';
 import { PageTransition } from '../components/PageTransition';
-import { OrganicFlow } from '../components/OrganicFlow';
+import { AuroraBackground } from '../components/AuroraBackground';
 import { MagneticButton } from '../components/MagneticButton';
 
 const projectTypes = [
@@ -57,7 +57,7 @@ export function StartProject() {
   return (
     <PageTransition>
       <div className="relative flex min-h-screen items-center bg-offwhite px-6 py-32 md:px-16 lg:px-24">
-        <OrganicFlow />
+        <AuroraBackground />
         <div className="relative z-10 mx-auto w-full max-w-2xl">
           {done ? (
             <motion.div

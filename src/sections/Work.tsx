@@ -2,14 +2,14 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { PageTransition } from '../components/PageTransition';
-import { OrganicFlow } from '../components/OrganicFlow';
+import { AuroraBackground } from '../components/AuroraBackground';
 import { projects } from '../data/projects';
 
 export function Work() {
   return (
     <PageTransition>
       <div className="relative min-h-screen bg-offwhite px-6 pb-24 pt-32 md:px-16 md:pt-40 lg:px-24">
-        <OrganicFlow />
+        <AuroraBackground />
         <div className="relative z-10">
           <p className="text-xs uppercase tracking-[0.3em] text-purple">Real Impact</p>
           <h1 className="mt-6 max-w-2xl font-display text-4xl leading-[1.1] text-navy sm:text-5xl md:text-6xl">

@@ -1,44 +1,61 @@
-import { useRef } from 'react';
+import { useRef, type CSSProperties } from 'react';
 import { motion } from 'framer-motion';
 import type { NavNode } from '../data/navigation';
 
 interface NavigationNodeProps {
   node: NavNode;
-  radius: number;
+  index: number;
+  wrapperStyle: CSSProperties;
+  direction: { x: number; y: number };
   isActive: boolean;
   isDimmed: boolean;
+  compact?: boolean;
+  labelMode?: 'auto' | 'above';
   onHover: (node: NavNode | null) => void;
   onSelect: (node: NavNode, origin: { x: number; y: number }) => void;
 }
 
-const NODE_SIZE = 'clamp(48px, 5.2vw, 68px)';
-const GAP = `calc(${NODE_SIZE} / 2 + 16px)`;
-
 export function NavigationNode({
   node,
-  radius,
+  index,
+  wrapperStyle,
+  direction,
   isActive,
   isDimmed,
+  compact = false,
+  labelMode = 'auto',
   onHover,
   onSelect,
 }: NavigationNodeProps) {
   const ref = useRef<HTMLButtonElement>(null);
-  const rad = (node.angle * Math.PI) / 180;
-  const cos = Math.cos(rad);
-  const sin = Math.sin(rad);
-  const isHorizontal = Math.abs(cos) > 0.5;
   const Icon = node.icon;
+
+  const size = compact ? 46 : 64;
+  const gap = size / 2 + (compact ? 12 : 18);
+  const horizontal = labelMode === 'auto' && Math.abs(direction.x) > 0.5;
 
   const handleSelect = () => {
     const rect = ref.current?.getBoundingClientRect();
-    const origin = rect
-      ? { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
-      : { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-    onSelect(node, origin);
+    onSelect(
+      node,
+      rect
+        ? { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
+        : { x: window.innerWidth / 2, y: window.innerHeight / 2 },
+    );
   };
 
   return (
-    <>
+    <motion.div
+      className="absolute h-0 w-0"
+      style={wrapperStyle}
+      initial={{ opacity: 0, scale: 0.5 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        duration: 0.8,
+        delay: 0.45 + index * 0.09,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+    >
       <motion.button
         ref={ref}
         aria-label={`${node.label} — ${node.subtitle}`}
@@ -47,64 +64,74 @@ export function NavigationNode({
         onFocus={() => onHover(node)}
         onBlur={() => onHover(null)}
         onClick={handleSelect}
-        className={`absolute z-20 flex items-center justify-center rounded-full border transition-colors duration-500 ${
-          isActive ? 'border-purple bg-purple' : 'border-navy/10 bg-white'
+        className={`z-20 flex items-center justify-center rounded-full border transition-colors duration-500 ${
+          isActive ? 'border-purple bg-purple' : 'border-navy/10 bg-white/90 backdrop-blur-sm'
         }`}
         style={{
-          left: `${50 + radius * cos}%`,
-          top: `${50 + radius * sin}%`,
-          x: '-50%',
-          y: '-50%',
-          width: NODE_SIZE,
-          height: NODE_SIZE,
+          width: size,
+          height: size,
+          marginLeft: -size / 2,
+          marginTop: -size / 2,
+          position: 'absolute',
         }}
         animate={{
-          scale: isActive ? 1.18 : 1,
-          opacity: isDimmed ? 0.45 : 1,
+          scale: isActive ? 1.16 : 1,
+          opacity: isDimmed ? 0.4 : 1,
+          x: isActive ? direction.x * 6 : 0,
+          y: isActive ? direction.y * 6 : 0,
           boxShadow: isActive
-            ? '0 18px 40px -12px rgba(110, 53, 197, 0.55), 0 0 0 6px rgba(184, 162, 242, 0.18)'
-            : '0 10px 30px -18px rgba(17, 25, 54, 0.5)',
+            ? '0 20px 45px -14px rgba(110, 53, 197, 0.5), 0 0 0 8px rgba(184, 162, 242, 0.16)'
+            : '0 12px 32px -20px rgba(17, 25, 54, 0.45)',
         }}
-        whileTap={{ scale: 1.06 }}
-        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+        whileTap={{ scale: 1.04 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       >
         <motion.span
-          animate={{ scale: isActive ? 1.1 : 1 }}
+          animate={{ scale: isActive ? 1.08 : 1 }}
           transition={{ duration: 0.4 }}
           className={`flex items-center justify-center transition-colors duration-500 ${
             isActive ? 'text-white' : 'text-royal'
           }`}
         >
-          <Icon size={20} strokeWidth={1.6} />
+          <Icon size={compact ? 17 : 20} strokeWidth={1.5} />
         </motion.span>
       </motion.button>
 
       <motion.div
-        className="pointer-events-none absolute z-10 w-[140px]"
+        className={`pointer-events-none absolute z-10 ${compact ? 'w-[58px]' : 'w-[132px]'}`}
         style={{
-          left: `${50 + radius * cos}%`,
-          top: `${50 + radius * sin}%`,
-          textAlign: isHorizontal ? (cos > 0 ? 'left' : 'right') : 'center',
-          paddingLeft: isHorizontal && cos > 0 ? GAP : undefined,
-          paddingRight: isHorizontal && cos < 0 ? GAP : undefined,
-          paddingTop: !isHorizontal && sin > 0 ? GAP : undefined,
-          paddingBottom: !isHorizontal && sin < 0 ? GAP : undefined,
-          translateX: isHorizontal ? (cos > 0 ? '0%' : '-100%') : '-50%',
-          translateY: isHorizontal ? '-50%' : sin > 0 ? '0%' : '-100%',
+          textAlign: horizontal ? (direction.x > 0 ? 'left' : 'right') : 'center',
+          left: horizontal ? (direction.x > 0 ? gap : undefined) : 0,
+          right: horizontal ? (direction.x < 0 ? gap : undefined) : undefined,
+          top: horizontal ? 0 : direction.y > 0 ? gap : undefined,
+          bottom: !horizontal && direction.y < 0 ? gap : undefined,
+          transform: horizontal
+            ? 'translateY(-50%)'
+            : `translateX(${compact ? '-29px' : '-66px'})`,
         }}
-        animate={{ opacity: isDimmed ? 0.4 : 1 }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        animate={{ opacity: isDimmed ? 0.35 : 1 }}
+        transition={{ duration: 0.4 }}
       >
-        <div className="text-[10px] tracking-[0.25em] text-purple-light">{node.index}</div>
         <div
-          className={`mt-1 text-[11px] font-medium uppercase tracking-[0.16em] transition-colors duration-300 ${
-            isActive ? 'text-purple' : 'text-navy'
+          className={`font-sans tracking-[0.3em] text-purple-light ${
+            compact ? 'text-[8px]' : 'text-[9px]'
           }`}
         >
-          {node.label}
+          {node.index}
         </div>
-        <div className="mt-0.5 text-[10px] tracking-wide text-muted">{node.subtitle}</div>
+        <div
+          className={`mt-1 font-sans font-medium uppercase leading-tight transition-colors duration-500 ${
+            compact ? 'text-[9.5px] tracking-[0.12em]' : 'text-[11px] tracking-[0.18em]'
+          } ${isActive ? 'text-purple' : 'text-navy'}`}
+        >
+          {compact ? node.shortLabel : node.label}
+        </div>
+        {!compact && (
+          <div className="mt-1 font-serif text-[11px] italic tracking-wide text-muted">
+            {node.subtitle}
+          </div>
+        )}
       </motion.div>
-    </>
+    </motion.div>
   );
 }

@@ -33,7 +33,7 @@ export function ParallaxPanel({
         {imageUrl ? (
           <img src={imageUrl} alt="" className="h-full w-full object-cover" />
         ) : (
-          <div className="relative h-full w-full bg-gradient-to-br from-lavender via-purple-light to-royal">
+          <div className="relative h-full w-full bg-gradient-to-br from-white via-lavender to-purple-light">
             <svg
               viewBox="0 0 400 600"
               className="absolute inset-0 h-full w-full opacity-20"

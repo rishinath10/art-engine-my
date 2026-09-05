@@ -4,6 +4,7 @@ export interface NavNode {
   id: string;
   index: string;
   label: string;
+  shortLabel: string;
   subtitle: string;
   path: string;
   icon: LucideIcon;
@@ -17,6 +18,7 @@ export const navNodes: NavNode[] = [
     id: 'about',
     index: '01',
     label: 'About Us',
+    shortLabel: 'About',
     subtitle: 'Who We Are',
     path: '/about',
     icon: User,
@@ -28,6 +30,7 @@ export const navNodes: NavNode[] = [
     id: 'services',
     index: '02',
     label: 'Services',
+    shortLabel: 'Services',
     subtitle: 'What We Do',
     path: '/services',
     icon: LayoutGrid,
@@ -39,6 +42,7 @@ export const navNodes: NavNode[] = [
     id: 'work',
     index: '03',
     label: 'Our Work',
+    shortLabel: 'Work',
     subtitle: 'Real Impact',
     path: '/work',
     icon: FolderOpen,
@@ -50,6 +54,7 @@ export const navNodes: NavNode[] = [
     id: 'insights',
     index: '04',
     label: 'Insights',
+    shortLabel: 'Insights',
     subtitle: 'Ideas & Trends',
     path: '/insights',
     icon: FileText,
@@ -61,6 +66,7 @@ export const navNodes: NavNode[] = [
     id: 'contact',
     index: '05',
     label: 'Contact',
+    shortLabel: 'Contact',
     subtitle: "Let's Create",
     path: '/contact',
     icon: Mail,
@@ -72,6 +78,7 @@ export const navNodes: NavNode[] = [
     id: 'start-a-project',
     index: '06',
     label: 'Start a Project',
+    shortLabel: 'Start',
     subtitle: 'Turn Ideas Into Reality',
     path: '/start-a-project',
     icon: Rocket,

@@ -1,5 +1,5 @@
 import { PageTransition } from '../components/PageTransition';
-import { OrganicFlow } from '../components/OrganicFlow';
+import { AuroraBackground } from '../components/AuroraBackground';
 import { ParallaxPanel } from '../components/ParallaxPanel';
 
 const stats = [
@@ -13,7 +13,7 @@ export function About() {
   return (
     <PageTransition>
       <div className="relative min-h-screen bg-offwhite px-6 pb-24 pt-32 md:px-16 md:pt-40 lg:px-24">
-        <OrganicFlow />
+        <AuroraBackground />
         <div className="relative z-10 grid gap-16 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12">
           <div>
             <p className="text-xs uppercase tracking-[0.3em] text-purple">About Us</p>
