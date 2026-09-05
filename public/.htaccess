@@ -1,0 +1,51 @@
+# Apache/LiteSpeed config for the built site (Hostinger shared hosting).
+# Copied into dist/ at build time — upload it alongside index.html.
+
+# --- SPA routing -----------------------------------------------------------
+# React Router owns the URLs, so any path that is not a real file has to be
+# served index.html or the server returns 404 on a direct visit / refresh.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # real files and directories are served untouched
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# --- Compression -----------------------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# --- Caching ---------------------------------------------------------------
+# Asset filenames carry a content hash, so they can be cached indefinitely.
+# index.html must revalidate or visitors keep loading an old bundle.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(js|css|woff2|png|jpe?g|svg)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
+
+# --- MIME ------------------------------------------------------------------
+<IfModule mod_mime.c>
+  AddType font/woff2 .woff2
+</IfModule>
