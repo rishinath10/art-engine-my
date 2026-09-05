@@ -74,8 +74,8 @@ export function HeroNavigation({
     return (
       <div className="relative flex w-full flex-col items-center">
         {/* padding reserves room for the labels, which sit outside the ring box */}
-        <div className="flex w-full justify-center py-11">
-        <div className="relative aspect-square w-full max-w-[min(64vw,264px,34vh)]">
+        <div className="flex w-full justify-center py-11 [@media(max-height:760px)]:pb-11 [@media(max-height:760px)]:pt-7">
+        <div className="relative aspect-square w-full max-w-[min(64vw,264px,34vh)] [@media(max-height:760px)]:max-w-[min(56vw,210px,30vh)]">
           <svg
             viewBox="0 0 100 100"
             className="absolute inset-0 h-full w-full"
@@ -137,7 +137,7 @@ export function HeroNavigation({
         </div>
         </div>
 
-        <div className="absolute left-1/2 top-full flex w-full max-w-sm -translate-x-1/2 items-start justify-center px-6 text-center">
+        <div className="absolute left-1/2 top-full mt-5 flex w-full max-w-sm -translate-x-1/2 items-start justify-center px-6 text-center">
           <HoverPreview hovered={hovered} />
         </div>
       </div>
