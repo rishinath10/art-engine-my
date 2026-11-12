@@ -1,4 +1,12 @@
-import { createContext, useCallback, useContext, useRef, useState, type ReactNode } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface TransitionState {
@@ -22,9 +30,25 @@ export function useTransition() {
 
 const idle: TransitionState = { active: false, x: 0, y: 0, size: 0 };
 
+/**
+ * How long to wait for the veil to report that it covers the screen before
+ * swapping anyway. The sweep is 0.66s; a frame or two of slack past that is
+ * fine, a stalled callback is not — measured navigations on the live site ran
+ * to 2.5s because nothing capped this.
+ */
+const COVER_TIMEOUT = 900;
+
 export function TransitionProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<TransitionState>(idle);
   const pending = useRef<(() => void) | null>(null);
+  const fallback = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(
+    () => () => {
+      if (fallback.current) clearTimeout(fallback.current);
+    },
+    [],
+  );
 
   const runTransition = useCallback((x: number, y: number, onCovered: () => void) => {
     if (typeof window === 'undefined') {
@@ -38,16 +62,25 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
     );
     pending.current = onCovered;
     setState({ active: true, x, y, size: Math.ceil(reach * 2) + 40 });
+
+    if (fallback.current) clearTimeout(fallback.current);
+    fallback.current = setTimeout(() => runCovered(), COVER_TIMEOUT);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Fires the moment the veil actually covers the screen, so the route swap is
-  // never visible — the old timing-based guess could change the page mid-sweep.
-  const handleCovered = () => {
+  // Normally fired the moment the veil actually covers the screen, so the swap
+  // is never visible. Guarded so the animation callback and the timeout above
+  // cannot both run it.
+  function runCovered() {
+    if (fallback.current) {
+      clearTimeout(fallback.current);
+      fallback.current = null;
+    }
     if (!pending.current) return;
     pending.current();
     pending.current = null;
     requestAnimationFrame(() => setState((s) => ({ ...s, active: false })));
-  };
+  }
 
   return (
     <TransitionContext.Provider value={{ runTransition }}>
@@ -73,7 +106,7 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.62, ease: [0.33, 1, 0.68, 1] } }}
             transition={{ duration: 0.66, ease: [0.76, 0, 0.24, 1] }}
-            onAnimationComplete={handleCovered}
+            onAnimationComplete={() => runCovered()}
           />
         )}
       </AnimatePresence>

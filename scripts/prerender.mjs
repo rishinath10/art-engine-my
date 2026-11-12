@@ -23,7 +23,15 @@ const escape = (value) =>
   value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 /** Absolute URL for a route. Search engines and link unfurlers both need one. */
-const absolute = (path) => (path === '/' ? `${SITE_URL}/` : `${SITE_URL}${path}`);
+/**
+ * Absolute URL for a route, with the trailing slash the server actually
+ * serves. Each page is a directory with an index.html, so a request for
+ * "/about" is redirected to "/about/" by the web server — pointing canonical
+ * tags and the sitemap at the unslashed form made every one of them a hop
+ * through a 301. This is also what nginx will do, so it survives the move
+ * off Apache.
+ */
+const absolute = (path) => `${SITE_URL}${path.endsWith('/') ? path : path + '/'}`;
 
 /**
  * The typefaces the first screen actually paints in: the display face at 300

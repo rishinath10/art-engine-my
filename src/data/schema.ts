@@ -21,7 +21,12 @@ function isoDate(human: string): string | undefined {
   return `${year}-${String(index + 1).padStart(2, '0')}-01`;
 }
 
-const absolute = (path: string) => (path === '/' ? `${SITE_URL}/` : `${SITE_URL}${path}`);
+/**
+ * Absolute URL for a route, with the trailing slash the server actually
+ * serves — see the matching note in scripts/prerender.mjs. Without it every
+ * canonical and breadcrumb URL pointed at a 301.
+ */
+const absolute = (path: string) => `${SITE_URL}${path.endsWith('/') ? path : path + '/'}`;
 
 const publisher = {
   '@type': 'Organization',

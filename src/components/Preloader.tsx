@@ -3,11 +3,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Logo } from './Logo';
 import { useScrollLock } from '../hooks/useScrollLock';
 
-const MIN_DURATION = 1100;
+const MIN_DURATION = 700;
 
 /**
- * First-load curtain. Waits for fonts (so the title never swaps weight in
- * view) plus a floor duration, then lifts.
+ * First-load curtain. Waits for the two faces the first screen paints in — not
+ * every face on the site — plus a floor duration, then lifts.
  */
 export function Preloader() {
   const [done, setDone] = useState(false);
@@ -23,8 +23,18 @@ export function Preloader() {
       setTimeout(() => !cancelled && setDone(true), wait);
     };
 
-    const fonts = document.fonts?.ready ?? Promise.resolve();
-    Promise.race([fonts, new Promise((r) => setTimeout(r, 2500))]).then(finish);
+    // document.fonts.ready waits for all twelve faces; the curtain only exists
+    // so the title does not swap weight in view, and the build already
+    // preloads exactly these two. Waiting on the rest cost seconds.
+    const critical = document.fonts
+      ? Promise.all([
+          document.fonts.load('300 1rem "Cormorant Garamond"'),
+          document.fonts.load('300 1rem "Jost"'),
+        ])
+      : Promise.resolve(null);
+    Promise.race([critical, new Promise((r) => setTimeout(r, 1200))])
+      .catch(() => undefined)
+      .then(finish);
 
     return () => {
       cancelled = true;
@@ -39,14 +49,17 @@ export function Preloader() {
       {!done && (
         <motion.div
           className="fixed inset-0 z-[1000] flex flex-col items-center justify-center bg-offwhite"
-          exit={{ opacity: 0, filter: 'blur(12px)' }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          // pointerEvents goes with the exit: the curtain stays mounted for
+          // the length of the fade, and without this it keeps swallowing taps
+          // on the hub behind it long after it has become invisible.
+          exit={{ opacity: 0, filter: 'blur(12px)', pointerEvents: 'none' }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.94 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 1.06 }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
             <Logo className="w-[168px] md:w-[210px]" />
           </motion.div>
