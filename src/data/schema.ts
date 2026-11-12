@@ -1,7 +1,7 @@
 import { projects } from './projects';
 import { insights } from './insights';
 import { metaForPath } from './meta';
-import { SITE_URL, SITE_NAME, OG_IMAGE, LOGO_URL, company } from './site';
+import { SITE_URL, SITE_NAME, OG_IMAGE, LOGO_URL, company, legal } from './site';
 
 /**
  * Structured data for the prerenderer. Imported only by the SSR entry, so none
@@ -44,8 +44,8 @@ const organisation = {
   logo: LOGO_URL,
   image: OG_IMAGE,
   description: metaForPath('/').description,
-  email: 'hello@artengine.my',
-  telephone: '+60173921219',
+  email: legal.email,
+  telephone: legal.phoneE164,
   foundingDate: String(company.founded),
   address: {
     '@type': 'PostalAddress',

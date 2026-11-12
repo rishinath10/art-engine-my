@@ -6,12 +6,14 @@ import { Reveal } from '../components/Reveal';
 import { MagneticButton } from '../components/MagneticButton';
 import { PrivacyNote } from '../components/PrivacyNote';
 import { SocialLinks } from '../components/SocialLinks';
-import { activeSocials } from '../data/site';
+import { activeSocials, legal } from '../data/site';
 
+// Read from src/data/site.ts so the page, the privacy notice and the
+// structured data can never disagree about how to reach us.
 const details = [
-  { icon: Mail, label: 'hello@artengine.my', href: 'mailto:hello@artengine.my' },
-  { icon: Phone, label: '+60 17-392 1219', href: 'tel:+60173921219' },
-  { icon: MapPin, label: 'Kuala Lumpur, Malaysia' },
+  { icon: Mail, label: legal.email, href: `mailto:${legal.email}` },
+  { icon: Phone, label: legal.phone, href: `tel:${legal.phoneE164}` },
+  { icon: MapPin, label: legal.address },
 ];
 
 const field =

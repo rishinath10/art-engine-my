@@ -54,7 +54,12 @@ export const legal = {
   entity: 'Art Engine My Solutions',
   registrationNumber: '',
   email: 'hello@artengine.my',
-  phone: '+60 17-392 1219',
+  /** As written on the page. */
+  phone: '+60 18-929 3609',
+  /** Same number, dialable — for tel: links and structured data. */
+  phoneE164: '+60189293609',
+  /** Digits only, as wa.me expects. */
+  whatsapp: '60189293609',
   address: 'Kuala Lumpur, Malaysia',
   /** How long enquiry details are kept once a conversation ends. */
   retention: '24 months',
