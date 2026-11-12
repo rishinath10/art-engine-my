@@ -1,0 +1,11 @@
+node_modules
+dist
+dist-ssr
+dist-preview
+reference
+.git
+.github
+*.log
+.env
+.env.*
+!.env.example

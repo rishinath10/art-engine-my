@@ -63,6 +63,14 @@ export const privacySections: PrivacySection[] = [
     ],
   },
   {
+    heading: 'Paying for something',
+    body: [
+      'If you buy a package or start a monthly plan, payment is handled by Stripe on their own checkout page. We never see or store your full card number.',
+      'To fulfil an order we keep your name, email address, phone number if you gave one, and the billing details Stripe passes back to us — what you bought, the amount, and whether it was paid. We keep these as business records for as long as the law requires.',
+      'Stripe processes this as its own data controller under its privacy policy, and may transfer it outside Malaysia.',
+    ],
+  },
+  {
     heading: 'Who else handles it',
     body: [
       'Two suppliers necessarily touch an enquiry on its way to us, and both act on our instructions only:',
@@ -70,6 +78,8 @@ export const privacySections: PrivacySection[] = [
     points: [
       'our web host, which runs the server this site is served from and passes the form submission on',
       'our email provider, which delivers and stores the message we receive',
+      'Stripe, if you buy something, to take the payment and manage any subscription',
+      'Supabase, which hosts the database your order and account records are stored in',
     ],
   },
   {

@@ -45,6 +45,19 @@ const staticMeta: Record<string, PageMeta> = {
     description:
       'What artenginemy.com collects, what we do with it, and how to have it corrected or removed under the Personal Data Protection Act 2010.',
   },
+  '/terms': {
+    title: `Terms of Sale — ${SITE}`,
+    description:
+      'What each package includes, how payment works, how to cancel a monthly plan, and when we refund.',
+  },
+  '/account': {
+    title: `Your Account — ${SITE}`,
+    description: 'Sign in to see your orders, subscriptions and billing.',
+  },
+  '/checkout/success': {
+    title: `Thank You — ${SITE}`,
+    description: 'Your payment went through.',
+  },
   '/404': {
     title: `Page Not Found — ${SITE}`,
     description: 'That address does not lead anywhere on this site.',

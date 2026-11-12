@@ -3,7 +3,7 @@ import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import App from './App';
 
-export { staticPaths, errorPath } from './routes';
+export { staticPaths, errorPath, clientPaths } from './routes';
 export { metaForPath } from './data/meta';
 export { SITE_URL, SITE_NAME, OG_IMAGE, LOGO_URL } from './data/site';
 export { schemasForPath } from './data/schema';

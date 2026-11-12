@@ -9,6 +9,9 @@ import { InsightsArticle } from './sections/InsightsArticle';
 import { Contact } from './sections/Contact';
 import { StartProject } from './sections/StartProject';
 import { Privacy } from './sections/Privacy';
+import { Terms } from './sections/Terms';
+import { Account } from './sections/Account';
+import { CheckoutSuccess } from './sections/CheckoutSuccess';
 import { NotFound } from './sections/NotFound';
 import { projects } from './data/projects';
 import { insights } from './data/insights';
@@ -29,6 +32,9 @@ export const appRoutes: AppRoute[] = [
   { path: '/contact', element: <Contact /> },
   { path: '/start-a-project', element: <StartProject /> },
   { path: '/privacy', element: <Privacy /> },
+  { path: '/terms', element: <Terms /> },
+  { path: '/account', element: <Account /> },
+  { path: '/checkout/success', element: <CheckoutSuccess /> },
   // anything else — the server answers 404 and this is what it renders
   { path: '*', element: <NotFound /> },
 ];
@@ -43,6 +49,7 @@ export const staticPaths: string[] = [
   '/contact',
   '/start-a-project',
   '/privacy',
+  '/terms',
   ...projects.map((p) => `/work/${p.slug}`),
   ...insights.map((p) => `/insights/${p.slug}`),
 ];
@@ -52,3 +59,10 @@ export const staticPaths: string[] = [
  * out of staticPaths so it never reaches the sitemap.
  */
 export const errorPath = '/404';
+
+/**
+ * Prerendered so a direct visit and Stripe's redirect both resolve on a static
+ * host — without a file on disk the server answers 404. Their content is
+ * account-specific, so they are marked noindex and kept out of the sitemap.
+ */
+export const clientPaths: string[] = ['/account', '/checkout/success'];

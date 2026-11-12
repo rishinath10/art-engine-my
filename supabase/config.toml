@@ -1,0 +1,10 @@
+# Edge function settings. The Stripe webhook is called by Stripe (no Supabase JWT),
+# so JWT verification is switched off for it; it is protected by Stripe's signature instead.
+[functions.stripe-webhook]
+verify_jwt = false
+
+[functions.create-checkout-session]
+verify_jwt = true
+
+[functions.create-portal-session]
+verify_jwt = true

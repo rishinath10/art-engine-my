@@ -10,6 +10,7 @@ const {
   render,
   staticPaths,
   errorPath,
+  clientPaths,
   metaForPath,
   schemasForPath,
   SITE_URL,
@@ -122,6 +123,15 @@ for (const path of staticPaths) {
 
 // The server's ErrorDocument. Kept out of the sitemap and marked noindex.
 writeFileSync(join(dist, '404.html'), writePage(errorPath, { indexable: false }));
+
+// Account and checkout pages: real files so a direct visit and Stripe's
+// redirect both resolve, but noindex and absent from the sitemap.
+for (const path of clientPaths) {
+  const outDir = join(dist, path);
+  mkdirSync(outDir, { recursive: true });
+  writeFileSync(join(outDir, 'index.html'), writePage(path, { indexable: false }));
+  written += 1;
+}
 
 // --- sitemap.xml -----------------------------------------------------------
 // Priority follows the hub-and-spoke shape of the site: the hub, then the six

@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { PageShell } from '../components/PageShell';
 import { Reveal } from '../components/Reveal';
+import { ShopSection } from '../components/shop/ShopSection';
 import { services } from '../data/services';
 import { ToolMark } from '../components/ToolMark';
 import { TransitionLink } from '../components/TransitionLink';
@@ -115,6 +116,8 @@ export function Services() {
           );
         })}
       </div>
+
+      <ShopSection />
 
       <Reveal className="mt-20">
         <div className="glass flex flex-col items-start gap-6 rounded-3xl p-10 md:flex-row md:items-center md:justify-between">
